@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class QuizServiceImpl implements QuizService {
 
+    private static final String USER_NOT_FOUND = "Пользователь не найден";
     private final QuizDao quizDao;
     private final UserService userService;
     private final InputOutputService inOutService;
@@ -35,8 +36,7 @@ public class QuizServiceImpl implements QuizService {
         String firstName = inOutService.ask("Введите имя: ");
         User user = userService.saveUser(lastName, firstName);
         int countCorrectAnswer = 0;
-        inOutService.ask("*** Приступим к тестированию? ***");
-        inOutService.outputData("***     Деваться не куда!     ***");
+        inOutService.outputData("*** Приступим к тестированию? ***");
         for (Quiz q : getAllQuizzes()) {
             String answer = askQuestion(q);
             if (q.isCorrectAnswer(Integer.valueOf(answer))) {
@@ -50,14 +50,18 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public String askQuestion(Quiz quiz) {
-        String message = String.format("Вопрос: %s%sВведите номер правильного ответа: ",
-                quiz.getQuestion(), System.lineSeparator());
-        return inOutService.ask(message);
+        String sb = "Вопрос: " + quiz.getQuestion() +
+                System.lineSeparator() +
+                "Варианты ответа:" + quiz.getAnswers().toString() +
+                System.lineSeparator() +
+                "Введите номер правильного ответа: ";
+        return inOutService.ask(sb);
     }
 
     @Override
     public String getResultTest(User user) {
         Integer countAnswer = userResults.get(user);
-        return String.format("У %s количество правильных ответов: %s", user.getFullName(), countAnswer);
+        return countAnswer == null ? USER_NOT_FOUND :
+                String.format("У %s количество правильных ответов: %s", user.getFullName(), countAnswer);
     }
 }
