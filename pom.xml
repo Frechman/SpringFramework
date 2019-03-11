@@ -20,6 +20,7 @@
 
     <modules>
         <module>quiz-soft-hw1</module>
+        <module>quiz-soft-hw2</module>
     </modules>
 
     <dependencies>
