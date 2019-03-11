@@ -1,7 +1,7 @@
 package ru.gavrilov.service.quiz;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.gavrilov.dao.QuizDao;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.model.User;
@@ -23,7 +23,7 @@ public class QuizServiceImplTest {
     private List<Quiz> quizList;
     private QuizServiceImpl quizService;
 
-    @Before
+    @BeforeEach
     public void init() {
         userService = mock(UserService.class);
         when(userService.saveUser("last", "first"))

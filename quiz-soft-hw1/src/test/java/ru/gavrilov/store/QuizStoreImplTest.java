@@ -1,6 +1,6 @@
 package ru.gavrilov.store;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ru.gavrilov.model.Quiz;
 
 import java.io.IOException;

@@ -1,7 +1,8 @@
 package ru.gavrilov.dao;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.store.QuizStore;
 
@@ -21,13 +22,14 @@ public class QuizDaoImplTest {
     private QuizStore quizStore;
     private QuizDaoImpl quizDao;
 
-    @Before
+    @BeforeEach
     public void init() {
         quizStore = mock(QuizStore.class);
         quizDao = new QuizDaoImpl(quizStore);
     }
 
     @Test
+    @DisplayName("shouldCorrectQuiz")
     public void whenGetQuizByQuestionThenReturnCorrectQuiz() {
         Quiz testQuiz = new Quiz("test", 1, Arrays.asList("testA1", "a2", "testA3", "a4"));
         quizList.set(2, testQuiz);

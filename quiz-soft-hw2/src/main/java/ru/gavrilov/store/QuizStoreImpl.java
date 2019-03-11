@@ -14,7 +14,7 @@ public class QuizStoreImpl implements QuizStore {
 
     private final List<Quiz> quizStore;
 
-    public QuizStoreImpl(@Value("${test.file}") final String pathFile) throws IOException {
+    public QuizStoreImpl(@Value("${test.pathFile}") final String pathFile) throws IOException {
         quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(pathFile));
     }
 
@@ -23,7 +23,7 @@ public class QuizStoreImpl implements QuizStore {
         return quizStore;
     }
 
-    private List<Quiz> loadQuizFromCsvWithBuffReader(String fileName) throws IOException {
+    private List<Quiz> loadQuizFromCsvWithBuffReader(final String fileName) throws IOException {
         List<Quiz> list = new ArrayList<>();
         final InputStream resourceAsStream = getClass().getResourceAsStream(fileName);
         try (BufferedReader br = new BufferedReader(new InputStreamReader(resourceAsStream))) {
@@ -40,7 +40,7 @@ public class QuizStoreImpl implements QuizStore {
         }
     }
 
-    private List<Quiz> loadQuizFromCsvWithScanner(String fileName) throws IOException {
+    private List<Quiz> loadQuizFromCsvWithScanner(final String fileName) throws IOException {
         List<Quiz> list = new ArrayList<>();
         String file = Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile();
         try (Scanner scanner = new Scanner(new File(file))) {
