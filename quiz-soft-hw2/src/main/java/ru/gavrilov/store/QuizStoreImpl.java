@@ -1,6 +1,5 @@
 package ru.gavrilov.store;
 
-import com.opencsv.CSVReader;
 import ru.gavrilov.model.Quiz;
 
 import java.io.*;
@@ -23,12 +22,16 @@ public class QuizStoreImpl implements QuizStore {
 
     private List<Quiz> loadQuizFromCsvWithBuffReader(String fileName) throws IOException {
         List<Quiz> list = new ArrayList<>();
-        String file = Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile();
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        final InputStream resourceAsStream = getClass().getResourceAsStream(fileName);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resourceAsStream))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
-                list.add(createQuizFromValues(values));
+                try {
+                    list.add(createQuizFromValues(values));
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("Некорректные данные в csv. Заллогировал...");
+                }
             }
             return list;
         }
@@ -62,17 +65,5 @@ public class QuizStoreImpl implements QuizStore {
             }
         }
         return values.toArray(new String[0]);
-    }
-
-    private List<Quiz> loadQuizFromCsvWithOpenCsv(String fileName) throws IOException {
-        List<Quiz> list = new ArrayList<>();
-        String file = Objects.requireNonNull(getClass().getClassLoader().getResource(fileName)).getFile();
-        try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
-            String[] values;
-            while ((values = csvReader.readNext()) != null) {
-                list.add(createQuizFromValues(values));
-            }
-        }
-        return list;
     }
 }

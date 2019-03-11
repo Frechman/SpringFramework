@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="quizStore" class="ru.gavrilov.store.QuizStoreImpl">
-        <constructor-arg value="questions.csv"/>
+        <constructor-arg value="/questions.csv"/>
     </bean>
 
     <bean id="quizDao" class="ru.gavrilov.dao.QuizDaoImpl">

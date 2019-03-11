@@ -14,7 +14,6 @@
 
     <properties>
         <spring-context.version>5.1.5.RELEASE</spring-context.version>
-        <opencsv.version>4.5</opencsv.version>
     </properties>
 
     <dependencies>
@@ -23,12 +22,5 @@
             <artifactId>spring-context</artifactId>
             <version>${spring-context.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>${opencsv.version}</version>
-        </dependency>
-
     </dependencies>
 </project>
