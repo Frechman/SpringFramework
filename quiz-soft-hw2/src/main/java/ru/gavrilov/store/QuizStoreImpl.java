@@ -1,17 +1,20 @@
 package ru.gavrilov.store;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import ru.gavrilov.model.Quiz;
 
 import java.io.*;
 import java.util.*;
 
+@Service
 public class QuizStoreImpl implements QuizStore {
 
     private static final String COMMA_DELIMITER = ";";
 
     private final List<Quiz> quizStore;
 
-    public QuizStoreImpl(final String pathFile) throws IOException {
+    public QuizStoreImpl(@Value("${test.file}") final String pathFile) throws IOException {
         quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(pathFile));
     }
 

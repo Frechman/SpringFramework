@@ -1,5 +1,7 @@
 package ru.gavrilov.service.quiz;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.gavrilov.dao.QuizDao;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.model.User;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class QuizServiceImpl implements QuizService {
 
     private static final String USER_NOT_FOUND = "Пользователь не найден";
@@ -18,6 +21,7 @@ public class QuizServiceImpl implements QuizService {
     private final InputOutputService inOutService;
     private final Map<User, Integer> userResults = new HashMap<>();
 
+    @Autowired
     public QuizServiceImpl(final QuizDao quizDao, final UserService userService,
                            final InputOutputService inputOutputService) {
         this.quizDao = quizDao;

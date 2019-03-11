@@ -1,10 +1,12 @@
 package ru.gavrilov.service.user;
 
+import org.springframework.stereotype.Service;
 import ru.gavrilov.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final List<User> userStore = new ArrayList<>();
