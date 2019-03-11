@@ -1,6 +1,7 @@
 package ru.gavrilov.service.quiz;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.gavrilov.dao.QuizDao;
 import ru.gavrilov.model.Quiz;
@@ -21,12 +22,15 @@ public class QuizServiceImpl implements QuizService {
     private final InputOutputService inOutService;
     private final Map<User, Integer> userResults = new HashMap<>();
 
+    private final MessageSource messageSource;
+
     @Autowired
     public QuizServiceImpl(final QuizDao quizDao, final UserService userService,
-                           final InputOutputService inputOutputService) {
+                           final InputOutputService inputOutputService, final MessageSource messageSource) {
         this.quizDao = quizDao;
         this.userService = userService;
         this.inOutService = inputOutputService;
+        this.messageSource = messageSource;
     }
 
     @Override
