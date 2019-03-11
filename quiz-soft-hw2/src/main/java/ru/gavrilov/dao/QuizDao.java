@@ -8,5 +8,5 @@ public interface QuizDao {
 
     Quiz getQuizByQuestion(String question);
 
-    List<Quiz> getAllQuiz();
+    List<Quiz> getAllQuizzes();
 }

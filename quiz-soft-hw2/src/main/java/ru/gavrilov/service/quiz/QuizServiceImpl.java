@@ -18,23 +18,21 @@ public class QuizServiceImpl implements QuizService {
     private final InputOutputService inOutService;
     private final Map<User, Integer> userResults = new HashMap<>();
 
-    public QuizServiceImpl(final UserService userService, final QuizDao quizDao,
+    public QuizServiceImpl(final QuizDao quizDao, final UserService userService,
                            final InputOutputService inputOutputService) {
+        this.quizDao = quizDao;
         this.userService = userService;
         this.inOutService = inputOutputService;
-        this.quizDao = quizDao;
     }
 
     @Override
     public List<Quiz> getAllQuizzes() {
-        return quizDao.getAllQuiz();
+        return quizDao.getAllQuizzes();
     }
 
     @Override
     public void runTest() {
-        String lastName = inOutService.ask("Введите фамилию: ");
-        String firstName = inOutService.ask("Введите имя: ");
-        User user = userService.saveUser(lastName, firstName);
+        User user = askUserCredentials();
         int countCorrectAnswer = 0;
         inOutService.outputData("*** Приступим к тестированию? ***");
         for (Quiz q : getAllQuizzes()) {
@@ -48,8 +46,13 @@ public class QuizServiceImpl implements QuizService {
         inOutService.outputData("Ваши результаты:" + getResultTest(user));
     }
 
-    @Override
-    public String askQuestion(Quiz quiz) {
+    private User askUserCredentials() {
+        String lastName = inOutService.ask("Введите фамилию: ");
+        String firstName = inOutService.ask("Введите имя: ");
+        return userService.saveUser(lastName, firstName);
+    }
+
+    private String askQuestion(Quiz quiz) {
         String sb = "Вопрос: " + quiz.getQuestion() +
                 System.lineSeparator() +
                 "Варианты ответа:" + quiz.getAnswers().toString() +

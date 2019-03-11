@@ -22,7 +22,7 @@ public class QuizDaoImpl implements QuizDao {
     }
 
     @Override
-    public List<Quiz> getAllQuiz() {
+    public List<Quiz> getAllQuizzes() {
         return quizStore.getAllData();
     }
 }

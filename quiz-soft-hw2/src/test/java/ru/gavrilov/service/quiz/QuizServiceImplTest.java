@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class QuizServiceImplTest {
-
+/*
     private UserService userService;
     private QuizDao quizDao;
     private InputOutputService inputOutputService;
@@ -43,5 +43,5 @@ public class QuizServiceImplTest {
     public void getAllQuizzes() {
         List<Quiz> actualQuizzes = quizService.getAllQuizzes();
         assertThat(actualQuizzes).containsAll(quizList);
-    }
+    }*/
 }

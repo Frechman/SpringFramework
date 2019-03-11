@@ -19,10 +19,6 @@ public class Quiz {
         return question;
     }
 
-    public String getCorrectAnswer() {
-        return answers.get(correctAnswer);
-    }
-
     public boolean isCorrectAnswer(Integer answer) {
         return correctAnswer.equals(answer);
     }

@@ -3,10 +3,7 @@ package ru.gavrilov.store;
 import com.opencsv.CSVReader;
 import ru.gavrilov.model.Quiz;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class QuizStoreImpl implements QuizStore {

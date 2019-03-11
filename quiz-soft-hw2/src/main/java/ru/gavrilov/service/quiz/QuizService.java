@@ -11,8 +11,5 @@ public interface QuizService {
 
     void runTest();
 
-    String askQuestion(Quiz quiz);
-
     String getResultTest(User user);
-
 }

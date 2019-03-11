@@ -18,8 +18,7 @@ public class QuizStoreImplTest {
                 new Quiz("q1?", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q2?", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q3?", 2, Arrays.asList("a1", "a2", "a3", "a4")));
-        assertThat(quizStore.getAllData())
-                .hasSize(3)
-                .containsAll(quizzes);
+
+        assertThat(quizStore.getAllData()).hasSize(3).containsAll(quizzes);
     }
 }
