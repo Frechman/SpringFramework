@@ -11,18 +11,19 @@ import ru.gavrilov.service.user.UserService;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
 public class QuizServiceImpl implements QuizService {
 
-    private static final String USER_NOT_FOUND = "Пользователь не найден";
+    private final Map<User, Integer> userResults = new HashMap<>();
+
     private final QuizDao quizDao;
     private final UserService userService;
     private final InputOutputService inOutService;
-    private final Map<User, Integer> userResults = new HashMap<>();
-
-    private final MessageSource messageSource;
+    private final MessageSource msgSource;
+    private Locale locale;
 
     @Autowired
     public QuizServiceImpl(final QuizDao quizDao, final UserService userService,
@@ -30,7 +31,7 @@ public class QuizServiceImpl implements QuizService {
         this.quizDao = quizDao;
         this.userService = userService;
         this.inOutService = inputOutputService;
-        this.messageSource = messageSource;
+        this.msgSource = messageSource;
     }
 
     @Override
@@ -40,9 +41,10 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void runTest() {
+        this.locale = askUserLocale();
         User user = askUserCredentials();
         int countCorrectAnswer = 0;
-        inOutService.outputData("*** Приступим к тестированию? ***");
+        inOutService.outputData(getMsgLocale("msg.enter.ready"));
         for (Quiz q : getAllQuizzes()) {
             String answer = askQuestion(q);
             if (q.isCorrectAnswer(Integer.valueOf(answer))) {
@@ -50,29 +52,45 @@ public class QuizServiceImpl implements QuizService {
             }
         }
         userResults.put(user, countCorrectAnswer);
-        inOutService.outputData("*** Тест завершен! ***");
-        inOutService.outputData("Ваши результаты:" + getResultTest(user));
+        inOutService.outputData(getMsgLocale("msg.label.test-finish"));
+        inOutService.outputData(getMsgLocale("msg.label.your-result") + getResultTest(user));
+    }
+
+    private Locale askUserLocale() {
+        final String russian = getMsgLocale("msg.label.russian-lang");
+        final String english = getMsgLocale("msg.label.english-lang");
+        final String selectedLanguage = getMsgLocale("msg.enter.selected-language");
+        final String ask = inOutService.ask(selectedLanguage + russian + " / " + english);
+        return ask.equals(english) ? Locale.ENGLISH : new Locale("ru", "Ru");
     }
 
     private User askUserCredentials() {
-        String lastName = inOutService.ask("Введите фамилию: ");
-        String firstName = inOutService.ask("Введите имя: ");
+        String lastName = inOutService.ask(getMsgLocale("msg.enter.last-name"));
+        String firstName = inOutService.ask(getMsgLocale("msg.enter.first-name"));
         return userService.saveUser(lastName, firstName);
     }
 
     private String askQuestion(Quiz quiz) {
-        String sb = "Вопрос: " + quiz.getQuestion() +
+        String sb = getMsgLocale("msg.label.question") + quiz.getQuestion() +
                 System.lineSeparator() +
-                "Варианты ответа:" + quiz.getAnswers().toString() +
+                getMsgLocale("msg.label.answer-choice") + quiz.getAnswers().toString() +
                 System.lineSeparator() +
-                "Введите номер правильного ответа: ";
+                getMsgLocale("msg.enter.correct-answer");
         return inOutService.ask(sb);
     }
 
     @Override
     public String getResultTest(User user) {
         Integer countAnswer = userResults.get(user);
-        return countAnswer == null ? USER_NOT_FOUND :
-                String.format("У %s количество правильных ответов: %s", user.getFullName(), countAnswer);
+        return countAnswer == null ? getMsgLocale("msg.label.user-not-found") :
+                getMsgLocale("msg.label.result", new Object[] {user.getFullName(), countAnswer});
+    }
+
+    private String getMsgLocale(String param, Object[] objects) {
+        return msgSource.getMessage(param, objects, this.locale);
+    }
+
+    private String getMsgLocale(String param) {
+        return getMsgLocale(param, null);
     }
 }

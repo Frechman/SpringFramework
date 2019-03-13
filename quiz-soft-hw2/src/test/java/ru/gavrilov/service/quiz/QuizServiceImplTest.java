@@ -3,6 +3,7 @@ package ru.gavrilov.service.quiz;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.MessageSource;
 import ru.gavrilov.dao.QuizDao;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.model.User;
@@ -20,6 +21,7 @@ public class QuizServiceImplTest {
     private UserService userService;
     private QuizDao quizDao;
     private InputOutputService inputOutputService;
+    private MessageSource messageSource;
     private List<Quiz> quizList;
 
     @BeforeEach
@@ -39,7 +41,7 @@ public class QuizServiceImplTest {
     @Test
     @Disabled
     public void runTest() {
-        final QuizServiceImpl quizService = new QuizServiceImpl(quizDao, userService, inputOutputService);
+        final QuizServiceImpl quizService = new QuizServiceImpl(quizDao, userService, inputOutputService, messageSource);
 
         quizService.runTest();
     }
