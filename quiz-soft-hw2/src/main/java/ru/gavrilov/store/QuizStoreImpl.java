@@ -32,14 +32,15 @@ public class QuizStoreImpl implements QuizStore {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
-                try {
-                    list.add(createQuizFromValues(values));
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Некорректные данные в csv. Заллогировал...");
-                }
+                list.add(createQuizFromValues(values));
             }
-            return list;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Некорректные данные в csv. Заллогировал...");
+        } catch (NullPointerException npe) {
+            System.out.println("Файл не найден. Заллогировал...");
+            throw npe;
         }
+        return list;
     }
 
     private List<Quiz> loadQuizFromCsvWithScanner(final String fileName) throws IOException {

@@ -1,45 +1,68 @@
 package ru.gavrilov.service.quiz;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.MessageSource;
 import ru.gavrilov.dao.QuizDao;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.model.User;
-import ru.gavrilov.presentation.PresenterQuizService;
-import ru.gavrilov.service.user.UserService;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class QuizServiceImplTest {
 
-    private UserService userService;
     private QuizDao quizDao;
     private List<Quiz> quizList;
+    private QuizServiceImpl quizService;
 
     @BeforeEach
     public void init() {
-        userService = mock(UserService.class);
-        when(userService.saveUser("last", "first"))
-                .thenReturn(new User(1, "last", "name"));
         quizDao = mock(QuizDao.class);
         quizList = Arrays.asList(
                 new Quiz("q1", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q2", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q3", 1, Arrays.asList("a1", "a2", "a3", "a4")));
         when(quizDao.getAllQuizzes()).thenReturn(quizList);
+        this.quizService = new QuizServiceImpl(quizDao);
     }
 
     @Test
-    @Disabled
-    public void runTest() {
-//        final QuizServiceImpl quizService = new QuizServiceImpl(quizDao, userService, presenterQuizService, messageSource);
-//
-//        quizService.runTest();
+    @DisplayName("should return same test result as saved")
+    public void testSaveUserResultTest() {
+        User user = new User(1, "last", "name");
+        Integer countCorrectAnswer = 5;
+        quizService.saveUserResultTest(user, countCorrectAnswer);
+
+        Integer actual = quizService.getResultTest(user);
+
+        assertThat(actual).isEqualTo(countCorrectAnswer);
+    }
+
+    @Test
+    @DisplayName("when user has not result then return null")
+    public void whenUserHasNotThenReturnNull() {
+        final QuizServiceImpl quizService = new QuizServiceImpl(quizDao);
+        User user = new User(1, "last", "name");
+        Integer countCorrectAnswer = 5;
+        quizService.saveUserResultTest(user, countCorrectAnswer);
+
+        User anotherUser = new User(1, "last", "name");
+        Integer actual = quizService.getResultTest(anotherUser);
+
+        assertThat(actual).isNull();
+    }
+
+    @Test
+    @DisplayName("should return quizList")
+    public void testGetAllQuizzes() {
+        final QuizServiceImpl quizService = new QuizServiceImpl(quizDao);
+        List<Quiz> allQuizzes = quizService.getAllQuizzes();
+
+        assertThat(allQuizzes).containsAll(quizList);
     }
 }
