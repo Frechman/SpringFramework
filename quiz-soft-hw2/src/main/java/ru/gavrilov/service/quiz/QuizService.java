@@ -9,7 +9,7 @@ public interface QuizService {
 
     List<Quiz> getAllQuizzes();
 
-    void runTest();
+    void saveUserResultTest(User user, Integer countCorrectAnswer);
 
-    String getResultTest(User user);
+    Integer getResultTest(User user);
 }

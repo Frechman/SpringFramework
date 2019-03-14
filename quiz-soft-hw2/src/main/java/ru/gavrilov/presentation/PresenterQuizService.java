@@ -1,10 +1,12 @@
-package ru.gavrilov.service;
+package ru.gavrilov.presentation;
 
-public interface InputOutputService {
+public interface PresenterQuizService {
 
     void outputData(String message);
 
     String inputData();
 
     String ask(String question);
+
+    void runTest();
 }

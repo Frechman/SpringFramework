@@ -20,7 +20,8 @@ public class QuizStoreImplTest {
         prop.load(inputStream);
         inputStream.close();
         String pathFile = prop.getProperty("test.pathFile");
-        QuizStoreImpl quizStore = new QuizStoreImpl(pathFile);
+        String locale = prop.getProperty("test.locale");
+        QuizStoreImpl quizStore = new QuizStoreImpl(pathFile, locale);
         List<Quiz> quizzes = Arrays.asList(
                 new Quiz("q1?", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q2?", 1, Arrays.asList("a1", "a2", "a3", "a4")),

@@ -14,8 +14,10 @@ public class QuizStoreImpl implements QuizStore {
 
     private final List<Quiz> quizStore;
 
-    public QuizStoreImpl(@Value("${test.pathFile}") final String pathFile) throws IOException {
-        quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(pathFile));
+    public QuizStoreImpl(@Value("${test.pathFile}") final String pathFile,
+                         @Value("${test.locale}") final String locale) throws IOException {
+        String file = String.format("%s%s.csv", pathFile, locale);
+        quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(file));
     }
 
     @Override
