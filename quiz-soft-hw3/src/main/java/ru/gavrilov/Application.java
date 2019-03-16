@@ -1,17 +1,27 @@
 package ru.gavrilov;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.gavrilov.presentation.PresenterQuizService;
 
-@ComponentScan
-public class Application {
+@SpringBootApplication
+public class Application implements CommandLineRunner {
+
+    private final PresenterQuizService presenterQuizService;
+
+    @Autowired
+    public Application(PresenterQuizService presenterQuizService) {
+        this.presenterQuizService = presenterQuizService;
+    }
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
+        SpringApplication.run(Application.class, args);
+    }
 
-        PresenterQuizService presenterQuizService = context.getBean(PresenterQuizService.class);
-
+    @Override
+    public void run(String... args) throws Exception {
         presenterQuizService.runTest();
     }
 }
