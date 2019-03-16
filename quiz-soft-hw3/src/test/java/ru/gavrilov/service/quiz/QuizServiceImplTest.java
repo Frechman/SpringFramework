@@ -51,7 +51,7 @@ class QuizServiceImplTest {
         Integer countCorrectAnswer = 5;
         quizService.saveUserResultTest(user, countCorrectAnswer);
 
-        User anotherUser = new User(1, "last", "name");
+        User anotherUser = new User(2, "last", "name");
         Integer actual = quizService.getResultTest(anotherUser);
 
         assertThat(actual).isNull();
