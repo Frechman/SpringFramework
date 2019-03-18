@@ -1,8 +1,10 @@
 package ru.gavrilov.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.gavrilov.model.Quiz;
 import ru.gavrilov.store.QuizStore;
 
@@ -10,23 +12,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class QuizDaoImplTest {
 
+    @Autowired
+    public QuizDao quizDao;
+    @MockBean
+    private QuizStore quizStore;
     private List<Quiz> quizList = Arrays.asList(
             new Quiz("q1", 1, Arrays.asList("a1", "a2", "a3", "a4")),
             new Quiz("q2", 1, Arrays.asList("a1", "a2", "a3", "a4")),
             new Quiz("q3", 1, Arrays.asList("a1", "a2", "a3", "a4")));
-    private QuizStore quizStore;
-    private QuizDaoImpl quizDao;
-
-    @BeforeEach
-    void init() {
-        quizStore = mock(QuizStore.class);
-        quizDao = new QuizDaoImpl(quizStore);
-    }
 
     @Test
     @DisplayName("shouldCorrectQuiz")
