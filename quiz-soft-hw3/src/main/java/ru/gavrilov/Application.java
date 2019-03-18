@@ -1,17 +1,13 @@
 package ru.gavrilov;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.gavrilov.presentation.PresenterQuizService;
 
-@ComponentScan
+@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
-
-        PresenterQuizService presenterQuizService = context.getBean(PresenterQuizService.class);
-
-        presenterQuizService.runTest();
+        SpringApplication.run(Application.class, args).getBean(PresenterQuizService.class).runTest();
     }
 }
