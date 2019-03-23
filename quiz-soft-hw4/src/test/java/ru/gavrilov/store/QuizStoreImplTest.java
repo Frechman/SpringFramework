@@ -1,37 +1,34 @@
-/*
 package ru.gavrilov.store;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.gavrilov.model.Quiz;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@TestPropertySource("classpath:application-test.properties")
-@ContextConfiguration
+@SpringBootTest(properties = {
+        InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+        ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 class QuizStoreImplTest {
 
-    @Value("${test.pathFile}")
-    private String pathFile;
-    @Value("${test.locale}")
-    private String locale;
+    @MockBean
+    MessageSource messageSource;
 
     @Test
-    void getAllEnglishData() throws IOException {
-        QuizStoreImpl quizStore = new QuizStoreImpl(pathFile, locale);
+    void getAllEnglishData() {
+        when(messageSource.getMessage("test.pathFile", null, Locale.getDefault()))
+                .thenReturn("/test-questions_en.csv");
+        QuizStoreImpl quizStore = new QuizStoreImpl(messageSource);
         List<Quiz> quizzes = Arrays.asList(
                 new Quiz("q1?", 1, Arrays.asList("a1", "a2", "a3", "a4")),
                 new Quiz("q2?", 1, Arrays.asList("a1", "a2", "a3", "a4")),
@@ -43,9 +40,10 @@ class QuizStoreImplTest {
     }
 
     @Test
-    void getAllRussianData() throws IOException {
-        locale = "ru";
-        QuizStoreImpl quizStore = new QuizStoreImpl(pathFile, locale);
+    void getAllRussianData() {
+        when(messageSource.getMessage("test.pathFile", null, Locale.getDefault()))
+                .thenReturn("/test-questions_ru.csv");
+        QuizStoreImpl quizStore = new QuizStoreImpl(messageSource);
         List<Quiz> quizzes = Arrays.asList(
                 new Quiz("в1?", 1, Arrays.asList("о1", "о2", "о3", "о4")),
                 new Quiz("в2?", 1, Arrays.asList("о1", "о2", "о3", "о4")),
@@ -55,18 +53,4 @@ class QuizStoreImplTest {
 
         assertThat(quizStore.getAllData()).hasSize(5).containsAll(quizzes);
     }
-
-    @Test
-    void getException() {
-        assertThrows(NullPointerException.class, () -> new QuizStoreImpl("errorpath", "ru"));
-    }
-
-    @TestConfiguration
-    static class QuizStoreImplTestConfiguration {
-
-        @Bean
-        static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-            return new PropertySourcesPlaceholderConfigurer();
-        }
-    }
-}*/
+}

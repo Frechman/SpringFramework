@@ -49,7 +49,7 @@ class UserServiceImplTest {
     @DisplayName("should return get expected user by id")
     void testGetUserById() {
         User expected = new User(1, "test", "trest");
-        User userTwo = userService.saveUser("test", "trest");
+        User userTwo = userService.saveUser("test2", "trest");
 
         User actualUser = userService.getUserById(expected.getId());
 
