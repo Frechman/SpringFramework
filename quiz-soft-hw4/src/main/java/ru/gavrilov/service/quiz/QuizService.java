@@ -12,4 +12,6 @@ public interface QuizService {
     void saveUserResultTest(User user, Integer countCorrectAnswer);
 
     Integer getResultTest(User user);
+
+    String getAllResult();
 }

@@ -1,6 +1,7 @@
 package ru.gavrilov.store;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.gavrilov.model.Quiz;
 
@@ -11,17 +12,22 @@ import java.util.*;
 public class QuizStoreImpl implements QuizStore {
 
     private static final String COMMA_DELIMITER = ";";
+    private final MessageSource messageSource;
+    private List<Quiz> quizStore;
 
-    private final List<Quiz> quizStore;
-
-    public QuizStoreImpl(@Value("${test.pathFile}") final String pathFile,
-                         @Value("${test.locale}") final String locale) throws IOException {
-        String file = String.format("%s%s.csv", pathFile, locale);
-        quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(file));
+    @Autowired
+    public QuizStoreImpl(final MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 
     @Override
     public List<Quiz> getAllData() {
+        String file = messageSource.getMessage("test.pathFile", null, Locale.getDefault());
+        try {
+            quizStore = Collections.unmodifiableList(loadQuizFromCsvWithBuffReader(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return quizStore;
     }
 

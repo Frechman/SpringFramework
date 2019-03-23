@@ -1,3 +1,4 @@
+/*
 package ru.gavrilov.store;
 
 import org.junit.jupiter.api.Test;
@@ -68,4 +69,4 @@ class QuizStoreImplTest {
             return new PropertySourcesPlaceholderConfigurer();
         }
     }
-}
+}*/

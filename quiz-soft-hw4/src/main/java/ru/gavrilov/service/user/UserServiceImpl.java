@@ -14,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(String lastName, String firstName) {
+        if (getUserByLastName(lastName) != null) {
+            throw new IllegalArgumentException("A user with the last name already exist!");
+        }
         User user = new User(++countUser, lastName, firstName);
         userStore.add(user);
         return user;
@@ -33,5 +36,10 @@ public class UserServiceImpl implements UserService {
                 .filter(user -> user.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userStore;
     }
 }

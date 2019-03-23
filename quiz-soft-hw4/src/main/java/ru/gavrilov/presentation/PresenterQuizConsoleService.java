@@ -1,7 +1,6 @@
 package ru.gavrilov.presentation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.gavrilov.model.Quiz;
@@ -20,15 +19,13 @@ public class PresenterQuizConsoleService implements PresenterQuizService {
     private final UserService userService;
     private final MessageSource msgSource;
     private final QuizService quizService;
-    private Locale locale;
 
     @Autowired
     public PresenterQuizConsoleService(final QuizService quizService, final UserService userService,
-                                       final MessageSource messageSource, @Value("${test.locale}") String systemLocale) {
+                                       final MessageSource messageSource) {
         this.userService = userService;
         this.msgSource = messageSource;
         this.quizService = quizService;
-        this.locale = new Locale(systemLocale.toLowerCase(), systemLocale.toUpperCase());
     }
 
     @Override
@@ -48,7 +45,9 @@ public class PresenterQuizConsoleService implements PresenterQuizService {
     }
 
     @Override
-    public void runTest() {
+    public String runTest() {
+        Locale locale = askUserLocale();
+        Locale.setDefault(locale);
         User user = askUserCredentials();
         int countCorrectAnswer = 0;
         this.outputData(getMsgLocale("msg.enter.ready"));
@@ -62,6 +61,7 @@ public class PresenterQuizConsoleService implements PresenterQuizService {
         this.outputData(getMsgLocale("msg.label.test-finish"));
 
         this.outputData(getMsgLocale("msg.label.your-result") + getResult(user));
+        return null;
     }
 
     private String getResult(User user) {
@@ -86,19 +86,18 @@ public class PresenterQuizConsoleService implements PresenterQuizService {
     }
 
     private String getMsgLocale(String param, Object[] objects) {
-        return msgSource.getMessage(param, objects, this.locale);
+        return msgSource.getMessage(param, objects, Locale.getDefault());
     }
 
     private String getMsgLocale(String param) {
         return getMsgLocale(param, null);
     }
 
-    /*  Закомментированный код хранить в гите плохо (c)
-        private Locale askUserLocale() {
+    private Locale askUserLocale() {
         final String russian = getMsgLocale("msg.label.russian-lang");
         final String english = getMsgLocale("msg.label.english-lang");
-        final String selectedLanguage = getMsgLocale("msg.enter.selected-language");
-        final String ask = inOutService.ask(selectedLanguage + russian + " / " + english);
+        final String selectedLanguage = getMsgLocale("msg.enter.select-lang");
+        final String ask = this.ask(selectedLanguage + russian + " / " + english);
         return ask.equals(english) ? Locale.ENGLISH : new Locale("ru", "Ru");
-    }*/
+    }
 }

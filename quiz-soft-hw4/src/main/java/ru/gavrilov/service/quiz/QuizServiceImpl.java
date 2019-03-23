@@ -36,4 +36,15 @@ public class QuizServiceImpl implements QuizService {
     public void saveUserResultTest(User user, Integer countCorrectAnswer) {
         userResults.put(user, countCorrectAnswer);
     }
+
+    public String getAllResult() {
+        StringBuilder sb = new StringBuilder();
+        userResults.forEach((user, res) -> {
+            if (user != null) {
+                sb.append(String.format("%s : %d", user.getFullName(), res))
+                        .append(System.lineSeparator());
+            }
+        });
+        return sb.toString();
+    }
 }

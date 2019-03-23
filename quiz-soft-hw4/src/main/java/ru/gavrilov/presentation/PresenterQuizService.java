@@ -8,5 +8,5 @@ public interface PresenterQuizService {
 
     String ask(String question);
 
-    void runTest();
+    String runTest();
 }
