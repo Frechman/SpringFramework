@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>ru.gavrilov</groupId>
-    <artifactId>quiz-soft-hw3</artifactId>
+    <artifactId>hw3-quiz-soft</artifactId>
     <version>1.0</version>
     <description>Homework 3. SpringBoot</description>
 
