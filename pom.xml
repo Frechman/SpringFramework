@@ -19,10 +19,10 @@
     </properties>
 
     <modules>
-        <module>quiz-soft-hw1</module>
-        <module>quiz-soft-hw2</module>
-        <module>quiz-soft-hw3</module>
-        <module>quiz-soft-hw4</module>
+        <module>hw1-quiz-soft</module>
+        <module>hw2-quiz-soft</module>
+        <module>hw3-quiz-soft</module>
+        <module>hw4-quiz-soft</module>
     </modules>
 
     <dependencies>
