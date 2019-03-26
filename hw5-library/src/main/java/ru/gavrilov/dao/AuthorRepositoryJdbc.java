@@ -1,4 +1,7 @@
 package ru.gavrilov.dao;
 
-public class AuthorRepositoryJdbc {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class AuthorRepositoryJdbc implements AuthorRepository {
 }

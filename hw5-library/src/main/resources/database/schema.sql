@@ -19,10 +19,13 @@ CREATE TABLE IF NOT EXISTS author (
   first_name VARCHAR(64) NOT NULL
   );
 
+SELECT *
+FROM author
+/*
 CREATE TABLE IF NOT EXISTS book_author (
   id        INTEGER PRIMARY KEY,
   book_isbn INTEGER NOT NULL,
   author_id INTEGER NOT NULL,
   FOREIGN KEY (book_isbn) REFERENCES book_author (book_isbn),
   FOREIGN KEY (author_id) REFERENCES book_author (author_id)
-  );
+  );*/

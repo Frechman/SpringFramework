@@ -1,4 +1,8 @@
 package ru.gavrilov.dao;
 
-public class BookRepositoryJdbc {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class BookRepositoryJdbc implements BookRepository {
+
 }
