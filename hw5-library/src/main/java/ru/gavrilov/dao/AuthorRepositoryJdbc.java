@@ -1,24 +1,27 @@
 package ru.gavrilov.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.gavrilov.model.Author;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Реализация с JdbcTemplate и DataSource.
+ */
 @Repository
 public class AuthorRepositoryJdbc implements AuthorRepository {
 
-    private final NamedParameterJdbcOperations jdbc;
+    private final JdbcTemplate jdbc;
 
     @Autowired
-    public AuthorRepositoryJdbc(NamedParameterJdbcOperations jdbc) {
-        this.jdbc = jdbc;
+    public AuthorRepositoryJdbc(DataSource dataSource) {
+        this.jdbc = new JdbcTemplate(dataSource);
     }
 
     @Override
@@ -32,35 +35,25 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
 
     @Override
     public Author findById(Long id) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("id", id);
-        return jdbc.queryForObject("SELECT * FROM author WHERE id = :id", params, new AuthorRowMapper());
+        return jdbc.queryForObject("SELECT * FROM author WHERE id = ?",
+                new Object[]{id}, new AuthorRowMapper());
     }
 
     @Override
     public void insert(Author author) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("id", author.getId());
-        params.put("firstName", author.getFirstName());
-        params.put("lastName", author.getLastName());
-        String sql = "INSERT INTO author (id, first_name, last_name) VALUES (:id, :firstName, :lastName)";
-        jdbc.update(sql, params);
+        String sql = "INSERT INTO author (id, first_name, last_name) VALUES (?,?,?)";
+        jdbc.update(sql, author.getId(), author.getFirstName(), author.getLastName());
     }
 
     @Override
     public void deleteById(Long id) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("deleteId", id);
-        jdbc.update("DELETE FROM author WHERE id = :deleteId", params);
+        jdbc.update("DELETE FROM author WHERE id = ?", id);
     }
 
     @Override
     public void update(Long id, Author author) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("updId", author.getId());
-        params.put("updFirstName", author.getFirstName());
-        params.put("updLastName", author.getLastName());
-        jdbc.update("UPDATE author SET last_name = :updLastName, first_name = :updFirstName WHERE id = :updId", params);
+        jdbc.update("UPDATE author SET last_name = ?, first_name = ? WHERE id = ?",
+                author.getLastName(), author.getFirstName(), author.getId());
     }
 
     private static class AuthorRowMapper implements RowMapper<Author> {

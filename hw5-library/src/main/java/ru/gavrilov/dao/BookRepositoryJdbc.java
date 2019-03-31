@@ -11,6 +11,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Реализация с NamedParameterJdbcOperations.
+ */
 @Repository
 public class BookRepositoryJdbc implements BookRepository {
 
@@ -60,7 +63,7 @@ public class BookRepositoryJdbc implements BookRepository {
     public List<Book> findAllByGenre(String genreName) {
         HashMap<String, Object> params = new HashMap<>(1);
         params.put("genreName", genreName);
-        String sql = "SELECT b.* FROM book b JOIN genre g ON g.id = b.genre_id WHERE g.name ILIKE :hegenreName";
+        String sql = "SELECT b.* FROM book b JOIN genre g ON g.id = b.genre_id WHERE g.name ILIKE :genreName";
         return jdbc.query(sql, params, new BookRowMapper());
     }
 

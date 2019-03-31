@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Реализация с JdbcOperations.
+ */
 @Repository
 public class GenreRepositoryJdbc implements GenreRepository {
 

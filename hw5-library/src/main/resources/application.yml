@@ -1,8 +1,32 @@
 spring:
+  profiles:
+    active: dev
+  # Database
   datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/library?createDatabaseIfnotExist=true"
+    username: "postgres"
+    password: "postgres"
+    schema: "classpath:database/schema-postgresql.sql"
+    data: "classpath:database/data-postgresql.sql"
     initialization-mode: always
-    schema: database/schema.sql
-    data: database/data.sql
-#    data-username:
-#    data-password:
-#    driver-class-name: org.postgresql.Driver;
+    # JPA Properties
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database: "postgresql"
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
+---
+# Test
+spring:
+  profiles: test
+  datasource:
+    driverClassName: org.h2.Driver
+    url: "jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=FALSE"
+    username: "sa"
+    password:
+  jpa:
+    database: "H2"
+    hibernate:
+      ddl-auto: create-drop
