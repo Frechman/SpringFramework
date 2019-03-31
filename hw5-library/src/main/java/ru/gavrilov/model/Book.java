@@ -1,13 +1,12 @@
 package ru.gavrilov.model;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.List;
+@Data
 
-@Getter
-@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Book {
 
@@ -15,12 +14,12 @@ public class Book {
     private String title;
     private Long publishYear;
     private Long genreId;
-    private List<Author> authors;
+    private Long authorId;
 
-    public Book(String isbn, String title, Long publishYear, Long genreId) {
-        this.isbn = isbn;
-        this.title = title;
-        this.publishYear = publishYear;
-        this.genreId = genreId;
+    @Override
+    public String toString() {
+        return "\"" + title + "\"" +
+                ", " + publishYear + "г." +
+                ", isbn:" + isbn;
     }
 }

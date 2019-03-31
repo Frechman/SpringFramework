@@ -1,11 +1,11 @@
 package ru.gavrilov.model;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Genre {
 
@@ -13,9 +13,8 @@ public class Genre {
     private String name;
     private String description;
 
-    public Genre(Long id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    @Override
+    public String toString() {
+        return String.format("Genre: %s. Description: %s", name, description);
     }
 }

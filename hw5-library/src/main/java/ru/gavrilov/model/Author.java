@@ -1,24 +1,20 @@
 package ru.gavrilov.model;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.List;
-
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Author {
 
     private Long id;
     private String firstName;
     private String lastName;
-    private List<Book> books;
 
-    public Author(Long id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    @Override
+    public String toString() {
+        return String.format("Author: %s %s", lastName, firstName);
     }
 }
