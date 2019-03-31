@@ -3,3 +3,6 @@ spring:
     initialization-mode: always
     schema: database/schema.sql
     data: database/data.sql
+#    data-username:
+#    data-password:
+#    driver-class-name: org.postgresql.Driver;
