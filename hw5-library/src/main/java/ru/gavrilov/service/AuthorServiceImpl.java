@@ -34,6 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void insert(Author author) {
         if (author != null) {
             authorRepository.insert(author);
+            return;
         }
         throw new IllegalArgumentException("Author is not null!");
     }
@@ -42,6 +43,7 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteById(Long id) {
         if (id != null) {
             authorRepository.deleteById(id);
+            return;
         }
         throw new IllegalArgumentException("Id is not null!");
     }

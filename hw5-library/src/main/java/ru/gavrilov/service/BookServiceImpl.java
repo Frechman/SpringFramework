@@ -35,6 +35,7 @@ public class BookServiceImpl implements BookService {
     public void insert(Book book) {
         if (book != null) {
             bookRepository.insert(book);
+            return;
         }
         throw new IllegalArgumentException("Book is not null!");
     }
@@ -43,6 +44,7 @@ public class BookServiceImpl implements BookService {
     public void deleteByIsbn(String isbn) {
         if (isbn != null) {
             bookRepository.deleteByIsbn(isbn);
+            return;
         }
         throw new IllegalArgumentException("Isbn is not null!");
     }

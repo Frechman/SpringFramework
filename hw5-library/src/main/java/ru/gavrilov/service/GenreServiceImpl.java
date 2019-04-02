@@ -34,6 +34,7 @@ public class GenreServiceImpl implements GenreService {
     public void insert(Genre genre) {
         if (genre != null) {
             genreRepository.insert(genre);
+            return;
         }
         throw new IllegalArgumentException("Genre is not null!");
     }
@@ -42,6 +43,7 @@ public class GenreServiceImpl implements GenreService {
     public void deleteById(Long id) {
         if (id != null) {
             genreRepository.deleteById(id);
+            return;
         }
         throw new IllegalArgumentException("Id is not null!");
     }
