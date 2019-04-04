@@ -47,7 +47,7 @@ public class BookRepositoryJdbc implements BookRepository {
         params.put("publishYear", book.getPublishYear());
         params.put("genreId", book.getGenreId());
         params.put("authorId", book.getAuthorId());
-        String sql = "INSERT INTO book (id, title, release_year, genre_id, author_id) " +
+        String sql = "INSERT INTO book (isbn, title, publish_year, genre_id, author_id) " +
                 "VALUES (:isbn, :title,:publishYear, :genreId, :authorId)";
         jdbc.update(sql, params);
     }
