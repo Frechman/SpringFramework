@@ -1,13 +1,13 @@
 package ru.gavrilov.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import ru.gavrilov.mapper.BookMapper;
 import ru.gavrilov.model.Book;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,36 +17,43 @@ import java.util.List;
 @Repository
 public class BookRepositoryJdbc implements BookRepository {
 
+    private static final String SELECT =
+            "SELECT * FROM book b JOIN author a ON a.id = b.author_id JOIN genre g ON g.id = b.genre_id";
     private final NamedParameterJdbcOperations jdbc;
+    private final BookMapper bookMapper;
 
     @Autowired
-    public BookRepositoryJdbc(NamedParameterJdbcOperations jdbc) {
+    public BookRepositoryJdbc(NamedParameterJdbcOperations jdbc, BookMapper bookMapper) {
         this.jdbc = jdbc;
+        this.bookMapper = bookMapper;
     }
 
     @Override
     public List<Book> findAll() {
-        return jdbc.query("SELECT * FROM book",
-                (rs, i) -> new Book(rs.getString("isbn"),
-                        rs.getString("title"), rs.getLong("publish_year"),
-                        rs.getLong("genre_id"), rs.getLong("author_id")));
+        return jdbc.query(SELECT, bookMapper);
     }
 
+    /**
+     * С использованием SqlParameterSource.
+     */
     @Override
     public Book findByIsbn(String isbn) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("isbn", isbn);
-        return jdbc.queryForObject("SELECT * FROM book WHERE isbn = :isbn", params, new BookRowMapper());
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("isbn", isbn);
+        return jdbc.queryForObject(SELECT + " WHERE isbn = :isbn", params, bookMapper);
     }
 
+    /**
+     * С использованием SqlParameterSource.
+     */
     @Override
     public void insert(Book book) {
-        final HashMap<String, Object> params = new HashMap<>(1);
-        params.put("isbn", book.getIsbn());
-        params.put("title", book.getTitle());
-        params.put("publishYear", book.getPublishYear());
-        params.put("genreId", book.getGenreId());
-        params.put("authorId", book.getAuthorId());
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("isbn", book.getIsbn())
+                .addValue("title", book.getTitle())
+                .addValue("publishYear", book.getPublishYear())
+                .addValue("genreId", book.getGenre().getId())
+                .addValue("authorId", book.getAuthor().getId());
         String sql = "INSERT INTO book (isbn, title, publish_year, genre_id, author_id) " +
                 "VALUES (:isbn, :title,:publishYear, :genreId, :authorId)";
         jdbc.update(sql, params);
@@ -54,38 +61,29 @@ public class BookRepositoryJdbc implements BookRepository {
 
     @Override
     public void deleteByIsbn(String isbn) {
-        HashMap<String, Object> params = new HashMap<>(1);
+        final HashMap<String, Object> params = new HashMap<>(1);
         params.put("isbn", isbn);
         jdbc.update("DELETE FROM book WHERE isbn = :isbn", params);
     }
 
     @Override
     public List<Book> findAllByGenre(String genreName) {
-        HashMap<String, Object> params = new HashMap<>(1);
+        final HashMap<String, Object> params = new HashMap<>(1);
         params.put("genreName", genreName);
-        String sql = "SELECT b.* FROM book b JOIN genre g ON g.id = b.genre_id WHERE g.name ILIKE :genreName";
-        return jdbc.query(sql, params, new BookRowMapper());
+        String sql = SELECT + " WHERE g.name ILIKE :genreName";
+        return jdbc.query(sql, params, bookMapper);
     }
 
     @Override
     public List<Book> findAllByAuthor(String authorLastName) {
-        HashMap<String, Object> params = new HashMap<>(1);
+        final HashMap<String, Object> params = new HashMap<>(1);
         params.put("authorLastName", authorLastName);
-        String sql = "SELECT b.* FROM book b JOIN author a ON a.id = b.author_id WHERE a.last_name ILIKE :authorLastName";
-        return jdbc.query(sql, params, new BookRowMapper());
+        String sql = SELECT + " WHERE a.last_name ILIKE :authorLastName";
+        return jdbc.query(sql, params, bookMapper);
     }
 
     @Override
     public int count() {
         return jdbc.getJdbcOperations().queryForObject("SELECT count(*) FROM book", Integer.class);
-    }
-
-    private static class BookRowMapper implements RowMapper<Book> {
-        @Override
-        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Book(rs.getString("isbn"),
-                    rs.getString("title"), rs.getLong("publish_year"),
-                    rs.getLong("genre_id"), rs.getLong("author_id"));
-        }
     }
 }

@@ -2,13 +2,11 @@ package ru.gavrilov.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import ru.gavrilov.mapper.AuthorMapper;
 import ru.gavrilov.model.Author;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -18,12 +16,17 @@ import java.util.List;
 public class AuthorRepositoryJdbc implements AuthorRepository {
 
     private final JdbcTemplate jdbc;
+    private final AuthorMapper authorMapper;
 
     @Autowired
-    public AuthorRepositoryJdbc(DataSource dataSource) {
+    public AuthorRepositoryJdbc(DataSource dataSource, AuthorMapper authorMapper) {
         this.jdbc = new JdbcTemplate(dataSource);
+        this.authorMapper = authorMapper;
     }
 
+    /**
+     * RowMapper с помощью lambda выражения.
+     */
     @Override
     public List<Author> findAll() {
         return jdbc.query("SELECT * FROM author", (rs, i) ->
@@ -36,7 +39,7 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
     @Override
     public Author findById(Long id) {
         return jdbc.queryForObject("SELECT * FROM author WHERE id = ?",
-                new Object[]{id}, new AuthorRowMapper());
+                new Object[]{id}, authorMapper);
     }
 
     @Override
@@ -54,15 +57,5 @@ public class AuthorRepositoryJdbc implements AuthorRepository {
     public void update(Long id, Author author) {
         jdbc.update("UPDATE author SET last_name = ?, first_name = ? WHERE id = ?",
                 author.getLastName(), author.getFirstName(), author.getId());
-    }
-
-    private static class AuthorRowMapper implements RowMapper<Author> {
-        @Override
-        public Author mapRow(ResultSet rs, int i) throws SQLException {
-            long id = rs.getLong("id");
-            String firstName = rs.getString("first_name");
-            String lastName = rs.getString("last_name");
-            return new Author(id, firstName, lastName);
-        }
     }
 }
