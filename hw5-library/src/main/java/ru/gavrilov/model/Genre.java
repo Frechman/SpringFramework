@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Genre {
 
-    private Long id;
+    private long id;
     private String name;
     private String description;
 
     @Override
     public String toString() {
-        return String.format("Genre: %s. Description: %s", name, description);
+        return String.format("Жанр: %s. Описание: %s", name, description);
     }
 }

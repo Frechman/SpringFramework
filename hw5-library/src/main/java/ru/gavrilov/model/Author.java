@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Author {
 
-    private Long id;
+    private long id;
     private String firstName;
     private String lastName;
 
     @Override
     public String toString() {
-        return String.format("Author: %s %s", lastName, firstName);
+        return String.format("Автор: %s %s", lastName, firstName);
     }
 }
