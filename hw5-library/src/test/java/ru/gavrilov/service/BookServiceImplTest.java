@@ -9,7 +9,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import ru.gavrilov.dao.BookRepository;
+import ru.gavrilov.model.Author;
 import ru.gavrilov.model.Book;
+import ru.gavrilov.model.Genre;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,11 +36,17 @@ class BookServiceImplTest {
 
     private List<Book> books;
 
+    private Book testBook = new Book("999", "book", 1L,
+            new Genre(1, "Роман", "Роман - не человек"),
+            new Author(1, "Достоевский", "Федор"));
+    private Book testBook2 = new Book("222", "book", 2L,
+            new Genre(2, "Поэзия", "Поэзия"),
+            new Author(2, "a", "a"));
+
+
     @BeforeEach
     void setUp() {
-        this.books = Arrays.asList(
-                new Book("999", "book", 1L, 1L, 1L),
-                new Book("222", "book", 2L, 2L, 2L));
+        this.books = Arrays.asList(testBook, testBook2);
     }
 
     @Test
@@ -52,8 +60,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("возвращать правильную книгу по isbn")
     void shouldReturnRightBookByIsbn() {
-        Book book = new Book("999", "book", 1L, 1L, 1L);
-        when(repositoryJdbc.findByIsbn("999")).thenReturn(book);
+        when(repositoryJdbc.findByIsbn("999")).thenReturn(testBook);
         assertThat(bookService.findByIsbn("999"))
                 .isEqualTo(books.get(0));
     }
@@ -61,7 +68,6 @@ class BookServiceImplTest {
     @Test
     @DisplayName("вызывать метод repositoryJdbc с нужными параметрами. Метод: insertBook")
     void shouldExecuteServiceMethodForInsertBook() {
-        Book testBook = new Book("999", "test", 1999L, 1L, 1L);
         bookService.insert(testBook);
         verify(repositoryJdbc, times(1)).insert(testBook);
     }

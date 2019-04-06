@@ -12,6 +12,7 @@ spring:
     initialization-mode: always
     # JPA Properties
   jpa:
+    generate-ddl: false
     hibernate:
       ddl-auto: none
     show-sql: true

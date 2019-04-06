@@ -6,6 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootConfiguration
 @EnableConfigurationProperties
-@ComponentScan({"ru.gavrilov.config", "ru.gavrilov.dao", "ru.gavrilov.service"})
+@ComponentScan({"ru.gavrilov.config", "ru.gavrilov.dao", "ru.gavrilov.service", "ru.gavrilov.mapper"})
 public class TestContextConfig {
 }
