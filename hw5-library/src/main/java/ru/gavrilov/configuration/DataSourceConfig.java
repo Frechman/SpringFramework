@@ -9,6 +9,9 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
+    /**
+     * Лишний бин. Добавлен лишь в целях обучения.
+     */
     @Bean
     public DataSource dataSourcePostgres() {
         DriverManagerDataSource ds = new DriverManagerDataSource();

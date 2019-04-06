@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import ru.gavrilov.config.TestContextConfig;
 import ru.gavrilov.dao.BookRepository;
 import ru.gavrilov.model.Author;
 import ru.gavrilov.model.Book;
@@ -23,8 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @JdbcTest
-@ActiveProfiles("test")
-@ContextConfiguration(classes = BookServiceImpl.class)
+@ContextConfiguration(classes = TestContextConfig.class)
 @DisplayName("Методы сервиса работы с книгами должны ")
 class BookServiceImplTest {
 

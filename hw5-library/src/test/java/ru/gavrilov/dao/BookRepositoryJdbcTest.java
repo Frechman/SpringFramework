@@ -4,11 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import ru.gavrilov.mapper.AuthorMapper;
-import ru.gavrilov.mapper.BookMapper;
-import ru.gavrilov.mapper.GenreMapper;
+import ru.gavrilov.config.TestContextConfig;
 import ru.gavrilov.model.Author;
 import ru.gavrilov.model.Book;
 import ru.gavrilov.model.Genre;
@@ -19,8 +16,7 @@ import java.util.Collections;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@ActiveProfiles("test")
-@ContextConfiguration(classes = {BookMapper.class, AuthorMapper.class, GenreMapper.class, BookRepositoryJdbc.class})
+@ContextConfiguration(classes = TestContextConfig.class)
 @DisplayName("Методы репозитория книг должны ")
 class BookRepositoryJdbcTest {
 

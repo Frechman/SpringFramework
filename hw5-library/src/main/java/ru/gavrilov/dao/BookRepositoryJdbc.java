@@ -18,7 +18,7 @@ import java.util.List;
 public class BookRepositoryJdbc implements BookRepository {
 
     private static final String SELECT =
-            "SELECT * FROM book b JOIN author a ON a.id = b.author_id JOIN genre g ON g.id = b.genre_id";
+            "SELECT * FROM book b INNER JOIN author a ON a.id = b.author_id INNER JOIN genre g ON g.id = b.genre_id";
     private final NamedParameterJdbcOperations jdbc;
     private final BookMapper bookMapper;
 

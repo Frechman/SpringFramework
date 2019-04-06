@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS author;
+
 CREATE TABLE IF NOT EXISTS genre (
   id          INTEGER PRIMARY KEY,
   name        VARCHAR(64),
@@ -19,12 +23,3 @@ CREATE TABLE IF NOT EXISTS book (
   FOREIGN KEY (genre_id) REFERENCES genre (id),
   FOREIGN KEY (author_id) REFERENCES author (id)
   );
-
-/* for next tasks
-CREATE TABLE IF NOT EXISTS book_author (
-  id        INTEGER PRIMARY KEY,
-  book_isbn INTEGER NOT NULL,
-  author_id INTEGER NOT NULL,
-  FOREIGN KEY (book_isbn) REFERENCES book_author (book_isbn),
-  FOREIGN KEY (author_id) REFERENCES book_author (author_id)
-  );*/
