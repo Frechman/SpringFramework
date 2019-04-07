@@ -34,17 +34,19 @@ class BookServiceImplTest {
     private BookRepository repositoryJdbc;
 
     private List<Book> books;
-
-    private Book testBook = new Book("999", "book", 1L,
-            new Genre(1, "Роман", "Роман - не человек"),
-            new Author(1, "Достоевский", "Федор"));
-    private Book testBook2 = new Book("222", "book", 2L,
-            new Genre(2, "Поэзия", "Поэзия"),
-            new Author(2, "a", "a"));
-
+    private Book testBook;
+    private Book testBook2;
 
     @BeforeEach
     void setUp() {
+        testBook = new Book("222", "book", 2L,
+                new Genre(2, "Поэзия", "Поэзия"),
+                new Author(2, "a", "a"));
+        testBook2 = new Book("999", "book", 1L,
+                new Genre(1, "Роман", "Роман - не человек"),
+                new Author(1, "Достоевский", "Федор"));
+
+
         this.books = Arrays.asList(testBook, testBook2);
     }
 
