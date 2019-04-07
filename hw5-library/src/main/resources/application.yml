@@ -1,0 +1,18 @@
+spring:
+  # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/library?createDatabaseIfnotExist=true"
+    username: "postgres"
+    password: "postgres"
+    schema: "classpath:database/schema-postgresql.sql"
+    data: "classpath:database/data-postgresql.sql"
+    initialization-mode: always
+  # JPA Properties
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database: "postgresql"
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
