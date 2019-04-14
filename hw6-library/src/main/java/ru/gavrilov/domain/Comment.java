@@ -1,25 +1,41 @@
 package ru.gavrilov.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "uuid")
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "COMMENT")
 public class Comment {
 
+    public Comment(String content, Book book) {
+        this.content = content;
+        this.book = book;
+    }
+
     @Id
     @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "uuid", strategy = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "uuid")
     private String uuid;
 
     @Column(name = "content")
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "book_isbn")
+    private Book book;
+
+    @Override
+    public String toString() {
+        return String.format("Комментарий \"%s\" к книге %s", content, book.getTitle());
+    }
 }

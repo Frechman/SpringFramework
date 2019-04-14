@@ -9,8 +9,9 @@ spring:
     initialization-mode: always
   # JPA Properties
   jpa:
-    generate-ddl: false
+    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true
     database: "H2"
+    database-platform: "org.hibernate.dialect.PostgreSQLDialect"
