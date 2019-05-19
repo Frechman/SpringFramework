@@ -41,9 +41,25 @@ public class CommentRepositoryJpa implements CommentRepository {
 
     @Override
     @Transactional
+    public boolean removeComment(Comment comment) {
+        return removeComment(comment.getUuid());
+    }
+
+    @Override
+    @Transactional
     public List<Comment> findAll() {
         TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c", Comment.class);
         return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public Optional<Comment> findByContentAndBook(String content, String bookIsbn) {
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c " +
+                "WHERE c.content LIKE :content AND c.book_isbn LIKE :book_isbn", Comment.class);
+        query.setParameter("content", content);
+        query.setParameter("book_isbn", bookIsbn);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override

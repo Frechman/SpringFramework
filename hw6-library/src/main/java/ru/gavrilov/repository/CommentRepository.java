@@ -18,5 +18,9 @@ public interface CommentRepository {
 
     Optional<Comment> findByUuid(String uuid);
 
+    Optional<Comment> findByContentAndBook(String content, String isbnBook);
+
     boolean removeComment(String uuid);
+
+    boolean removeComment(Comment comment);
 }
