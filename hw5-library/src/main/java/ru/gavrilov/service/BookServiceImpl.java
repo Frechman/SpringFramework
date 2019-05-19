@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
         if (isbn != null) {
             return bookRepository.findByIsbn(isbn);
         }
-        throw new IllegalArgumentException("Isbn is not null!");
+        throw new IllegalArgumentException("Isbn must not be null!");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.insert(book);
             return;
         }
-        throw new IllegalArgumentException("Book is not null!");
+        throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.deleteByIsbn(isbn);
             return;
         }
-        throw new IllegalArgumentException("Isbn is not null!");
+        throw new IllegalArgumentException("Isbn must not be null!");
     }
 
     @Override

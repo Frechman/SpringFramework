@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
         if (id != null) {
             return authorRepository.findById(id);
         }
-        throw new IllegalArgumentException("Id is not null!");
+        throw new IllegalArgumentException("Id must not be null!");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
             authorRepository.save(author);
             return;
         }
-        throw new IllegalArgumentException("Author is not null!");
+        throw new IllegalArgumentException("Author must not be null!");
     }
 
     @Override
@@ -46,13 +46,13 @@ public class AuthorServiceImpl implements AuthorService {
             authorRepository.delete(author);
             return;
         }
-        throw new IllegalArgumentException("Author is not null!");
+        throw new IllegalArgumentException("Author must not be null!");
     }
 
     @Override
     public void update(Author author) {
         if (author == null) {
-            throw new IllegalArgumentException("Author is not null!");
+            throw new IllegalArgumentException("Author must not be null!");
         }
         Optional<Author> foundAuthor = authorRepository.findById(author.getId());
         if (foundAuthor.isPresent()) {

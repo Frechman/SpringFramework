@@ -24,11 +24,11 @@ public class Book {
     @Column(name = "publish_year")
     private long publishYear;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
@@ -37,10 +37,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "\"" + title + "\"" +
-                ", " + publishYear + "г." +
-                ", isbn:" + isbn +
-                " " + author +
-                " " + genre;
+        return String.format("Книга \"%s\". %s, %d. isbn:%s", title, author, publishYear, isbn);
     }
 }

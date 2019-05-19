@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
         if (isbn != null) {
             return bookRepository.findByIsbn(isbn);
         }
-        throw new IllegalArgumentException("Isbn is not null!");
+        throw new IllegalArgumentException("Isbn must not be null!");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.save(book);
             return;
         }
-        throw new IllegalArgumentException("Book is not null!");
+        throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override
@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.delete(book);
             return;
         }
-        throw new IllegalArgumentException("Book is not null!");
+        throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override

@@ -30,12 +30,12 @@ public class Comment {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumn(name = "book_isbn")
     private Book book;
 
     @Override
     public String toString() {
-        return String.format("Комментарий \"%s\" к книге %s", content, book.getTitle());
+        return String.format("Комментарий \"%s\" к %s", content, book.toString());
     }
 }

@@ -28,7 +28,7 @@ public class GenreServiceImpl implements GenreService {
         if (id != null) {
             return genreRepository.findById(id);
         }
-        throw new IllegalArgumentException("Id is not null!");
+        throw new IllegalArgumentException("Id must not be null!");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class GenreServiceImpl implements GenreService {
             genreRepository.save(genre);
             return;
         }
-        throw new IllegalArgumentException("Genre is not null!");
+        throw new IllegalArgumentException("Genre must not be null!");
     }
 
     @Override
@@ -46,13 +46,13 @@ public class GenreServiceImpl implements GenreService {
             genreRepository.delete(genre);
             return;
         }
-        throw new IllegalArgumentException("Genre is not null!");
+        throw new IllegalArgumentException("Genre must not be null!");
     }
 
     @Override
     public void update(Genre genre) {
-        if (genre != null) {
-            throw new IllegalArgumentException("Author is not null!");
+        if (genre == null) {
+            throw new IllegalArgumentException("Genre must not be null!");
         }
         Optional<Genre> foundGenre = genreRepository.findById(genre.getId());
         if (foundGenre.isPresent()) {
