@@ -33,6 +33,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Optional<Book> findByTitle(String title) {
+        if (title != null) {
+            return bookRepository.findByTitle(title);
+        }
+        throw new IllegalArgumentException("Title must not be null!");
+    }
+
+    @Override
     public void save(Book book) {
         if (book != null) {
             bookRepository.save(book);
@@ -67,7 +75,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return bookRepository.count();
     }
 }

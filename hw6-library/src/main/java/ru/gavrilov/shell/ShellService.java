@@ -57,6 +57,24 @@ public class ShellService {
                 .map(Comment::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 
+    @ShellMethod("Find book by title.")
+    public String getBookByTitle(@ShellOption String title) {
+        Optional<Book> book = bookService.findByTitle(title);
+        return book.isPresent() ? book.get().toString() : "The book is not found.";
+    }
+
+    @ShellMethod("Find book by author's last name.")
+    public String getBooksByAuthor(@ShellOption String lastName) {
+        return bookService.findAllByAuthor(lastName).stream()
+                .map(Book::toString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    @ShellMethod("Find book by genre.")
+    public String getBooksByGenre(@ShellOption String genre) {
+        return bookService.findAllByGenre(genre).stream()
+                .map(Book::toString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
     @ShellMethod("Add comment to Book.")
     public String createComment(@ShellOption String isbn, @ShellOption String text) {
         Optional<Book> book = bookService.findByIsbn(isbn);
@@ -64,15 +82,15 @@ public class ShellService {
             commentService.createComment(text, book.get());
             return text;
         }
-        return "Book not found.";
+        return "The book is not found.";
     }
 
     @ShellMethod("Remove comment.")
     public String removeComment(@ShellOption String isbn, @ShellOption String text) {
-        String result = "Комментарий не удалён";
+        String result = "The comment is not found.";
         Optional<Comment> comment = commentService.findByContentAndBook(text, isbn);
         if (comment.isPresent()) {
-            result = commentService.removeComment(comment.get()) ? "Коментарий удалён" : result;
+            result = commentService.removeComment(comment.get()) ? "Comment has been deleted." : result;
         }
         return result;
     }

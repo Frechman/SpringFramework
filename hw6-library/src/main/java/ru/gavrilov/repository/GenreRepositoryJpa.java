@@ -19,7 +19,7 @@ public class GenreRepositoryJpa implements GenreRepository {
     @Override
     @Transactional
     public List<Genre> findAll() {
-        TypedQuery<Genre> query = em.createQuery("select g from Genre g", Genre.class);
+        TypedQuery<Genre> query = em.createQuery("SELECT g FROM Genre g", Genre.class);
         return query.getResultList();
     }
 
@@ -32,8 +32,8 @@ public class GenreRepositoryJpa implements GenreRepository {
     @Override
     @Transactional
     public Optional<Genre> findByName(String name) {
-        TypedQuery<Genre> query = em.createQuery("select g from Genre g where g.name ILIKE %:name%", Genre.class);
-        query.setParameter("name", name);
+        TypedQuery<Genre> query = em.createQuery("SELECT g FROM Genre g WHERE lower(g.name) LIKE :name", Genre.class);
+        query.setParameter("name", String.format("%%%s%%", name));
         return Optional.ofNullable(query.getSingleResult());
     }
 

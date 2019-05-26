@@ -33,8 +33,8 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     @Transactional
     public Optional<Author> findByLastName(String lastName) {
         TypedQuery<Author> query =
-                em.createQuery("SELECT a FROM Author a WHERE a.last_name ILIKE %:lastName%", Author.class);
-        query.setParameter("lastName", lastName);
+                em.createQuery("SELECT a FROM Author a WHERE lower(a.lastName) LIKE :lastName", Author.class);
+        query.setParameter("lastName", String.format("%%%s%%", lastName));
         return Optional.ofNullable(query.getSingleResult());
     }
 

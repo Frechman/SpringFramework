@@ -11,6 +11,8 @@ public interface BookService {
 
     Optional<Book> findByIsbn(String isbn);
 
+    Optional<Book> findByTitle(String title);
+
     void save(Book book);
 
     void delete(Book book);
@@ -19,5 +21,5 @@ public interface BookService {
 
     List<Book> findAllByAuthor(String authorLastName);
 
-    int count();
+    long count();
 }

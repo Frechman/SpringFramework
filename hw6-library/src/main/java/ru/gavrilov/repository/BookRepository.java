@@ -11,6 +11,8 @@ public interface BookRepository {
 
     Optional<Book> findByIsbn(String isbn);
 
+    Optional<Book> findByTitle(String title);
+
     void save(Book book);
 
     void delete(Book book);
@@ -21,5 +23,5 @@ public interface BookRepository {
 
     List<Book> findAllByContentComment(String content);
 
-    int count();
+    long count();
 }

@@ -56,16 +56,16 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Transactional
     public Optional<Comment> findByContentAndBook(String content, String bookIsbn) {
         TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c " +
-                "WHERE c.content LIKE :content AND c.book_isbn LIKE :book_isbn", Comment.class);
-        query.setParameter("content", content);
-        query.setParameter("book_isbn", bookIsbn);
+                "WHERE lower(c.content) = :content AND c.book.isbn = :bookIsbn", Comment.class);
+        query.setParameter("content", content.toLowerCase());
+        query.setParameter("bookIsbn", bookIsbn);
         return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
     @Transactional
     public List<Comment> findAllByBook(Book book) {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c WHERE c.book_isbn = :isbn", Comment.class);
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c WHERE c.book.isbn = :isbn", Comment.class);
         query.setParameter("isbn", book.getIsbn());
         return query.getResultList();
     }
