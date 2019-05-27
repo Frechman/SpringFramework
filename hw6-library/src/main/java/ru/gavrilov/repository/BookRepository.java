@@ -21,7 +21,5 @@ public interface BookRepository {
 
     List<Book> findAllByLastNameAuthor(String authorLastName);
 
-    List<Book> findAllByContentComment(String content);
-
     long count();
 }

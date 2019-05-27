@@ -3,7 +3,6 @@ package ru.gavrilov.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -31,9 +30,6 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-    private Set<Comment> comments;
 
     @Override
     public String toString() {

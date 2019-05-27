@@ -48,15 +48,15 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     @Transactional
     public List<Comment> findAll() {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c", Comment.class);
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c LEFT JOIN FETCH c.book", Comment.class);
         return query.getResultList();
     }
 
     @Override
     @Transactional
     public Optional<Comment> findByContentAndBook(String content, String bookIsbn) {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c " +
-                "WHERE lower(c.content) = :content AND c.book.isbn = :bookIsbn", Comment.class);
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c JOIN FETCH c.book b " +
+                "WHERE lower(c.content) = :content AND b.isbn = :bookIsbn", Comment.class);
         query.setParameter("content", content.toLowerCase());
         query.setParameter("bookIsbn", bookIsbn);
         return Optional.ofNullable(query.getSingleResult());
@@ -65,7 +65,8 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     @Transactional
     public List<Comment> findAllByBook(Book book) {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c WHERE c.book.isbn = :isbn", Comment.class);
+        TypedQuery<Comment> query =
+                em.createQuery("SELECT c FROM Comment c JOIN FETCH c.book b WHERE b.isbn = :isbn", Comment.class);
         query.setParameter("isbn", book.getIsbn());
         return query.getResultList();
     }
