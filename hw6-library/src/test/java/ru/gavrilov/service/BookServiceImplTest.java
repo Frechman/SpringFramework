@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gavrilov.domain.Book;
 
@@ -20,9 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
 })
 @DisplayName("Методы сервиса работы с книгами должны ")
-@ActiveProfiles("test")
-@Transactional
-@Rollback
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 class BookServiceImplTest {
 
     @Autowired
