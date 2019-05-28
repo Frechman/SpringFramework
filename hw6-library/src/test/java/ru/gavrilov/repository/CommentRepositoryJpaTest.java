@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Методы сервиса для работы с комментариями должны ")
 @ComponentScan({"ru.gavrilov.repository"})
 class CommentRepositoryJpaTest {
+
     @Autowired
     private TestEntityManager em;
 
@@ -36,21 +37,19 @@ class CommentRepositoryJpaTest {
 
     @Test
     @DisplayName("получать все комментарии.")
-    void findAll() {
+    void shouldFindAllComments() {
         assertThat(commentRepository.findAll()).hasSize(1).contains(comment);
     }
 
     @Test
     @DisplayName("получать все комментарии, которые есть у книги.")
-    void findAllByBook() {
+    void shouldFindAllCommentsByBook() {
         assertThat(commentRepository.findAllByBook(book)).hasSize(1).contains(comment);
     }
 
     @Test
     @DisplayName("оставлять комментарии к книгам.")
-    void createComment() {
-        commentRepository.createComment(comment);
-
+    void shouldAddComment() {
         assertThat(commentRepository.findAll().get(0))
                 .extracting(Comment::getContent)
                 .isEqualTo("test");
@@ -58,28 +57,23 @@ class CommentRepositoryJpaTest {
 
     @Test
     @DisplayName("получать комментарий по uuid.")
-    void findByUuid() {
-        Comment test = em.persist(comment);
-
-        assertThat(test).isEqualTo(em.find(Comment.class, test.getUuid()));
+    void shouldFindCommentByUuid() {
+        assertThat(comment).isEqualTo(em.find(Comment.class, comment.getUuid()));
     }
 
     @Test
     @DisplayName("получать комментарий по содержимому и книге.")
-    void findByContentAndBook() {
-        Comment test = em.persist(comment);
-
+    void shouldFindCommentByContentAndBook() {
         Optional<Comment> actual = commentRepository.findByContentAndBook("test", "999-888");
-        assertThat(actual.get()).isEqualTo(test);
+        assertThat(actual.get()).isEqualTo(comment);
     }
 
     @Test
     @DisplayName("удалять комментарии.")
-    void removeComment() {
-        Comment test = em.persist(comment);
+    void shouldRemoveComment() {
         assertThat(commentRepository.findAll()).hasSize(1);
 
-        assertThat(commentRepository.removeComment(test)).isTrue();
+        assertThat(commentRepository.removeComment(comment)).isTrue();
         assertThat(commentRepository.findAll()).isEmpty();
     }
 }
