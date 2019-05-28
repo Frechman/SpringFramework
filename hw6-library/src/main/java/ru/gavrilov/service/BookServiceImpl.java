@@ -2,11 +2,12 @@ package ru.gavrilov.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gavrilov.dao.BookRepository;
-import ru.gavrilov.model.Book;
+import ru.gavrilov.domain.Book;
+import ru.gavrilov.repository.BookRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -24,7 +25,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findByIsbn(String isbn) {
+    public Optional<Book> findByIsbn(String isbn) {
         if (isbn != null) {
             return bookRepository.findByIsbn(isbn);
         }
@@ -32,27 +33,35 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void insert(Book book) {
+    public Optional<Book> findByTitle(String title) {
+        if (title != null) {
+            return bookRepository.findByTitle(title);
+        }
+        throw new IllegalArgumentException("Title must not be null!");
+    }
+
+    @Override
+    public void save(Book book) {
         if (book != null) {
-            bookRepository.insert(book);
+            bookRepository.save(book);
             return;
         }
         throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override
-    public void deleteByIsbn(String isbn) {
-        if (isbn != null) {
-            bookRepository.deleteByIsbn(isbn);
+    public void delete(Book book) {
+        if (book != null) {
+            bookRepository.delete(book);
             return;
         }
-        throw new IllegalArgumentException("Isbn must not be null!");
+        throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override
     public List<Book> findAllByGenre(String genreName) {
         if (genreName != null) {
-            return bookRepository.findAllByGenre(genreName);
+            return bookRepository.findAllByGenreName(genreName);
         }
         return Collections.emptyList();
     }
@@ -60,14 +69,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllByAuthor(String authorLastName) {
         if (authorLastName != null) {
-            return bookRepository.findAllByAuthor(authorLastName);
+            return bookRepository.findAllByLastNameAuthor(authorLastName);
         }
         return Collections.emptyList();
     }
 
     @Override
-    public int count() {
+    public long count() {
         return bookRepository.count();
     }
-
 }

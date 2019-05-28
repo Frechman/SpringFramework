@@ -36,6 +36,7 @@
         <module>hw3-quiz-soft</module>
         <module>hw4-quiz-soft</module>
         <module>hw5-library</module>
+        <module>hw6-library</module>
     </modules>
 
     <dependencies>

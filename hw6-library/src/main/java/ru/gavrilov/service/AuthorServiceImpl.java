@@ -2,10 +2,11 @@ package ru.gavrilov.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gavrilov.dao.AuthorRepository;
-import ru.gavrilov.model.Author;
+import ru.gavrilov.domain.Author;
+import ru.gavrilov.repository.AuthorRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -23,7 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author findById(Long id) {
+    public Optional<Author> findById(Long id) {
         if (id != null) {
             return authorRepository.findById(id);
         }
@@ -31,30 +32,33 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void insert(Author author) {
+    public void save(Author author) {
         if (author != null) {
-            authorRepository.insert(author);
+            authorRepository.save(author);
             return;
         }
         throw new IllegalArgumentException("Author must not be null!");
     }
 
     @Override
-    public void deleteById(Long id) {
-        if (id != null) {
-            authorRepository.deleteById(id);
+    public void delete(Author author) {
+        if (author != null) {
+            authorRepository.delete(author);
             return;
         }
-        throw new IllegalArgumentException("Id must not be null!");
+        throw new IllegalArgumentException("Author must not be null!");
     }
 
     @Override
-    public void update(Long id, Author author) {
-        Author updAuthor = id == null ? null : authorRepository.findById(id);
-        if (updAuthor != null) {
-            authorRepository.update(id, author);
+    public void update(Author author) {
+        if (author == null) {
+            throw new IllegalArgumentException("Author must not be null!");
+        }
+        Optional<Author> foundAuthor = authorRepository.findById(author.getId());
+        if (foundAuthor.isPresent()) {
+            authorRepository.update(author);
         } else {
-            authorRepository.insert(author);
+            authorRepository.save(author);
         }
     }
 }

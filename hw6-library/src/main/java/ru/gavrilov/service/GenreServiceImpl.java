@@ -2,10 +2,11 @@ package ru.gavrilov.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.gavrilov.dao.GenreRepository;
-import ru.gavrilov.model.Genre;
+import ru.gavrilov.domain.Genre;
+import ru.gavrilov.repository.GenreRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -23,7 +24,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre findById(Long id) {
+    public Optional<Genre> findById(Long id) {
         if (id != null) {
             return genreRepository.findById(id);
         }
@@ -31,30 +32,33 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void insert(Genre genre) {
+    public void save(Genre genre) {
         if (genre != null) {
-            genreRepository.insert(genre);
+            genreRepository.save(genre);
             return;
         }
         throw new IllegalArgumentException("Genre must not be null!");
     }
 
     @Override
-    public void deleteById(Long id) {
-        if (id != null) {
-            genreRepository.deleteById(id);
+    public void delete(Genre genre) {
+        if (genre != null) {
+            genreRepository.delete(genre);
             return;
         }
-        throw new IllegalArgumentException("Id must not be null!");
+        throw new IllegalArgumentException("Genre must not be null!");
     }
 
     @Override
-    public void update(Long id, Genre genre) {
-        Genre updGenre = id == null ? null : genreRepository.findById(id);
-        if (updGenre != null) {
-            genreRepository.update(id, genre);
+    public void update(Genre genre) {
+        if (genre == null) {
+            throw new IllegalArgumentException("Genre must not be null!");
+        }
+        Optional<Genre> foundGenre = genreRepository.findById(genre.getId());
+        if (foundGenre.isPresent()) {
+            genreRepository.update(genre);
         } else {
-            genreRepository.insert(genre);
+            genreRepository.save(genre);
         }
     }
 }
