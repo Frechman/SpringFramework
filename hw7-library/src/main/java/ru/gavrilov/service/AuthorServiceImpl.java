@@ -1,0 +1,63 @@
+package ru.gavrilov.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.gavrilov.exceptions.AuthorNotFoundException;
+import ru.gavrilov.model.Author;
+import ru.gavrilov.repository.AuthorRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@Transactional
+public class AuthorServiceImpl implements AuthorService {
+
+    private final AuthorRepository authorRepository;
+
+    @Autowired
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
+    @Override
+    public List<Author> findAll() {
+        return authorRepository.findAll();
+    }
+
+    @Override
+    public Optional<Author> findById(Long id) {
+        if (id != null) {
+            return authorRepository.findById(id);
+        }
+        throw new IllegalArgumentException("Id must not be null!");
+    }
+
+    @Override
+    public void save(Author author) {
+        if (author != null) {
+            authorRepository.save(author);
+            return;
+        }
+        throw new IllegalArgumentException("Author must not be null!");
+    }
+
+    @Override
+    public void delete(Author author) {
+        if (author != null) {
+            authorRepository.delete(author);
+            return;
+        }
+        throw new IllegalArgumentException("Author must not be null!");
+    }
+
+    @Override
+    public void update(Author author) {
+        if (author == null) {
+            throw new IllegalArgumentException("Author must not be null!");
+        }
+        Author foundAuthor = authorRepository.findById(author.getId()).orElseThrow(AuthorNotFoundException::new);
+        authorRepository.save(foundAuthor);
+    }
+}
