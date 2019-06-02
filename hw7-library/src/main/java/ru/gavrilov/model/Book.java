@@ -1,7 +1,9 @@
 package ru.gavrilov.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,6 +12,8 @@ import javax.persistence.ManyToOne;
 
 @Data
 @EqualsAndHashCode(of = "isbn")
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Book {
 
