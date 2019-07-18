@@ -27,7 +27,7 @@
 
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.22.0</maven-failsafe-plugin.version>
-        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
     </properties>
 
     <modules>
@@ -35,8 +35,9 @@
         <module>hw2-quiz-soft</module>
         <module>hw3-quiz-soft</module>
         <module>hw4-quiz-soft</module>
-        <module>hw5-library</module>
-        <module>hw6-library</module>
+        <module>hw5-library-jdbc</module>
+        <module>hw6-library-orm-jpa</module>
+        <module>hw7-library-jpa</module>
     </modules>
 
     <dependencies>
