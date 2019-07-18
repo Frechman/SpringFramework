@@ -60,7 +60,7 @@ public class ShellService {
     @ShellMethod("Find book by title.")
     public String getBookByTitle(@ShellOption String title) {
         Optional<Book> book = bookService.findByTitle(title);
-        return book.isPresent() ? book.get().toString() : "The book is not found.";
+        return book.map(Book::toString).orElse("The book is not found.");
     }
 
     @ShellMethod("Find book by author's last name.")

@@ -65,7 +65,7 @@ class CommentRepositoryJpaTest {
     @DisplayName("получать комментарий по содержимому и книге.")
     void shouldFindCommentByContentAndBook() {
         Optional<Comment> actual = commentRepository.findByContentAndBook("test", book);
-        assertThat(actual.get()).isEqualTo(comment);
+        assertThat(actual.orElse(null)).isEqualTo(comment);
     }
 
     @Test
