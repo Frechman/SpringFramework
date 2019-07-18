@@ -35,9 +35,9 @@
         <module>hw2-quiz-soft</module>
         <module>hw3-quiz-soft</module>
         <module>hw4-quiz-soft</module>
-        <module>hw5-library</module>
-        <module>hw6-library</module>
-        <module>hw7-library</module>
+        <module>hw5-library-jdbc</module>
+        <module>hw6-library-orm-jpa</module>
+        <module>hw7-library-jpa</module>
     </modules>
 
     <dependencies>
