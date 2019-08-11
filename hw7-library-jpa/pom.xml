@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hw7-library</artifactId>
+    <artifactId>hw7-library-jpa</artifactId>
     <description>Library. Implementation with Spring Data JPA.</description>
 
     <properties>
