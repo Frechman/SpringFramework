@@ -2,6 +2,7 @@ package ru.gavrilov.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.gavrilov.model.Book;
 
@@ -11,14 +12,18 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book, String> {
 
-    @Query("select b from Book b join fetch b.author a join fetch b.genre g")
+    @Query("SELECT b FROM Book b JOIN FETCH b.author a JOIN FETCH b.genre g")
     List<Book> findAll();
 
-    Optional<Book> findByIsbn(String isbn);
+    @Query("SELECT b FROM Book b JOIN FETCH b.author a JOIN FETCH b.genre g WHERE b.isbn = :isbn")
+    Optional<Book> findByIsbn(@Param("isbn") String isbn);
 
-    Optional<Book> findByTitle(String title);
+    @Query("SELECT b FROM Book b JOIN FETCH b.author a JOIN FETCH b.genre g WHERE b.title = :title")
+    Optional<Book> findByTitle(@Param("title") String title);
 
-    List<Book> findAllByAuthorLastName(String authorLastName);
+    @Query("SELECT b FROM Book b JOIN FETCH b.author a JOIN FETCH b.genre g WHERE a.lastname = :authorLastName")
+    List<Book> findAllByAuthorLastName(@Param("authorLastName") String authorLastName);
 
-    List<Book> findAllByGenreName(String genre);
+    @Query("SELECT b FROM Book b JOIN FETCH b.author a JOIN FETCH b.genre g WHERE g.name = :genreName")
+    List<Book> findAllByGenreName(@Param("genreName") String genreName);
 }
