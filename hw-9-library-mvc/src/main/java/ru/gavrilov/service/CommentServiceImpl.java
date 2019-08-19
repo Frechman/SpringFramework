@@ -34,11 +34,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(new Comment(content, book));
     }
 
-    private boolean removeComment(String uuid) {
-        if (uuid == null) {
-            throw new IllegalArgumentException("Uuid must not be null!");
+    private boolean removeComment(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id must not be null!");
         }
-        commentRepository.deleteById(uuid);
+        commentRepository.deleteById(id);
         return true;
     }
 
@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
         if (comment == null) {
             throw new IllegalArgumentException("Comment must not be null!");
         }
-        return removeComment(comment.getUuid());
+        return removeComment(comment.getId());
     }
 
     @Override

@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, String> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT c FROM Comment c JOIN FETCH c.book")
     List<Comment> findAll();
 
-    @Query("SELECT c FROM Comment c JOIN FETCH c.book b WHERE b.isbn = :#{book.isbn}")
+    @Query("SELECT c FROM Comment c JOIN FETCH c.book b WHERE b.isbn = :#{#book.isbn}")
     List<Comment> findAllByBook(@Param("book") Book book);
 
-    @Query("SELECT c FROM Comment c JOIN FETCH c.book b WHERE c.content LIKE %:content% AND b.isbn = :#{book.isbn}")
+    @Query("SELECT c FROM Comment c JOIN FETCH c.book b WHERE c.content LIKE %:content% AND b.isbn = :#{#book.isbn}")
     Optional<Comment> findByContentAndBook(@Param("content") String content, @Param("book") Book book);
 }

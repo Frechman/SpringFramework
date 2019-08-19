@@ -16,4 +16,4 @@ spring:
     database: "H2"
     database-platform: "org.hibernate.dialect.PostgreSQLDialect"
 server:
-  port: 8088
+  port: 8080
