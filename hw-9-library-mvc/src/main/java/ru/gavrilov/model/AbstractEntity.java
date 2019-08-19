@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class BaseEntity {
+public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,15 +20,16 @@ public abstract class BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this.id == null || o == null || !(this.getClass().equals(o.getClass()))) {
+            return false;
+        }
+        AbstractEntity that = (AbstractEntity) o;
 
-        BaseEntity that = (BaseEntity) o;
-
-        return id != null && id.equals(that.id);
+        return this.id.equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return id == null ? 0 : id.hashCode();
     }
 }

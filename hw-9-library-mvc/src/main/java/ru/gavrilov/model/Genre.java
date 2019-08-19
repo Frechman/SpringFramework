@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Genre extends BaseEntity {
+public class Genre extends AbstractEntity {
 
     @NonNull
     private String name;

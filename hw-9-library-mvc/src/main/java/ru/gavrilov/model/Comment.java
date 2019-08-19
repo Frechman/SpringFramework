@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Comment extends BaseEntity {
+public class Comment extends AbstractEntity {
 
     private String content;
 
