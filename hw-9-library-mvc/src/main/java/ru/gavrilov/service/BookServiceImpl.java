@@ -3,6 +3,7 @@ package ru.gavrilov.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gavrilov.exceptions.BookNotFoundException;
 import ru.gavrilov.model.Book;
 import ru.gavrilov.repository.BookRepository;
 
@@ -58,6 +59,17 @@ public class BookServiceImpl implements BookService {
             return;
         }
         throw new IllegalArgumentException("Book must not be null!");
+    }
+
+    @Override
+    public void update(String isbn, Book book) {
+        Book foundBook = findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
+        //// TODO: 20.08.2019 move to bookService
+        foundBook.setTitle(book.getTitle());
+        foundBook.setAuthor(book.getAuthor());
+        foundBook.setGenre(book.getGenre());
+        foundBook.setPublishYear(book.getPublishYear());
+        save(foundBook);
     }
 
     @Override

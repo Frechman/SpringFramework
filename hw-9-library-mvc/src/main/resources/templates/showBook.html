@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Show book</title>
+
+  <div th:replace="index::css"></div>
+</head>
+<body>
+
+
+<div class="container">
+  <div class="starter-template">
+
+    <form th:action="@{/books/__${book.isbn}__/update}" th:method="put" th:object="${book}">
+      <fieldset>
+        <legend>Edit book</legend>
+
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" name="title" th:value="*{title}"
+                 placeholder="Enter book's title" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input class="form-control" id="author" name="author" th:value="*{author.lastName}"
+                 readonly="readonly" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="genre">Genre</label>
+          <input class="form-control" id="genre" name="genre" th:value="*{genre}"
+                 readonly="readonly" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="publishYear">Publish year</label>
+          <input class="form-control" id="publishYear" name="publishYear" th:value="*{publishYear}"
+                 placeholder="Enter publish year" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="isbn">Isbn</label>
+          <input class="form-control" id="isbn" name="isbn" th:value="*{isbn}"
+                 readonly="readonly" required/>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-default">Reset</button>
+        </div>
+      </fieldset>
+    </form>
+
+  </div>
+</div>
+
+<div th:replace="index::js"></div>
+</body>
+</html>

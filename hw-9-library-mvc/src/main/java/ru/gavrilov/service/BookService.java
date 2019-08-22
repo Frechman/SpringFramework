@@ -17,6 +17,8 @@ public interface BookService {
 
     void delete(Book book);
 
+    void update(String isbn, Book book);
+
     List<Book> findAllByGenre(String genre);
 
     List<Book> findAllByAuthor(String authorLastName);

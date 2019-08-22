@@ -21,7 +21,7 @@ public class BookController {
     @GetMapping("/books")
     public String listBook(Model model) {
         model.addAttribute("books", bookService.findAll());
-        return "listBook";
+        return "listBooks";
     }
 
     @GetMapping("/books/add")
@@ -45,17 +45,11 @@ public class BookController {
 
     @PutMapping("/books/{isbn}/update")
     public String getBook(@PathVariable("isbn") String isbn, @ModelAttribute("book") Book book) {
-        Book foundBook = bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
-        //// TODO: 20.08.2019 move to bookService
-        foundBook.setTitle(book.getTitle());
-        foundBook.setAuthor(book.getAuthor());
-        foundBook.setGenre(book.getGenre());
-        foundBook.setPublishYear(book.getPublishYear());
-        bookService.save(foundBook);
+        bookService.update(isbn, book);
         return "redirect:/books/";
     }
 
-    @DeleteMapping("/books/{isbn}")
+    @PostMapping("/books/{isbn}/delete")
     public String getBook(@PathVariable("isbn") String isbn) {
         bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
         return "redirect:/books/";
