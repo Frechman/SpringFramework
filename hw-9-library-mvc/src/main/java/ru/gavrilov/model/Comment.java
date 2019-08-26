@@ -4,20 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "COMMENT")
 public class Comment extends AbstractEntity {
 
+    @Column(name = "CONTENT")
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "book_isbn")
+    @JoinColumn(name = "BOOK_ISBN")
     private Book book;
 
     public Comment(String content, Book book) {

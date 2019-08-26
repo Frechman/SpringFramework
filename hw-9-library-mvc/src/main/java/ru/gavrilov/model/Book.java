@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -16,21 +14,25 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "BOOK")
 public class Book extends AbstractEntity {
 
     @NaturalId
+    @Column(name = "ISBN")
     private String isbn;
 
+    @Column(name = "TITLE")
     private String title;
 
+    @Column(name = "PUBLISH_YEAR")
     private long publishYear;
 
     @ManyToOne
-    @JoinColumn(name = "genre_id")
+    @JoinColumn(name = "GENRE_ID", nullable = false)
     private Genre genre;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
     private Author author;
 
     @Override

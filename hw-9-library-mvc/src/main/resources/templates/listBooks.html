@@ -24,6 +24,7 @@
           <th>Genre</th>
           <th>Publish year</th>
           <th>Isbn</th>
+          <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
           <td th:text="${book.author.toString()}">Author</td>
           <td th:text="${book.genre.toString()}">Genre</td>
           <td th:text="${book.publishYear}">Publish year</td>
+          <td th:text="${book.isbn}">Isbn</td>
           <td>
             <a class="badge badge-info" th:href="@{/books/__${book.isbn}__}">show</a>
             <a class="badge badge-info" th:href="@{/books/__${book.isbn}__/delete}">delete</a>
