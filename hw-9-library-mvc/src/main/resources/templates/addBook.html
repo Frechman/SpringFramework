@@ -22,14 +22,21 @@
 
         <div class="form-group">
           <label for="author">Author</label>
-          <input class="form-control" id="author" name="author" th:field="*{author.lastName}"
-                 placeholder="Enter author" required/>
+          <select class="form-control" id="author" name="author" th:field="${book.author}">
+            <option th:each="author : ${authorList}" th:value="${author.id}"
+                    th:text="${author.firstName + ' ' + author.lastName}">
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
           <label for="genre">Genre</label>
-          <input class="form-control" id="genre" name="genre" th:field="*{genre.name}"
-                 placeholder="Enter genre" required/>
+          <select class="form-control" id="genre" name="genre" th:field="${book.genre}">
+            <option th:each="genre : ${genreList}" th:value="${genre.id}"
+                    th:text="${genre.name}">
+              Author
+            </option>
+          </select>
         </div>
 
         <div class="form-group">

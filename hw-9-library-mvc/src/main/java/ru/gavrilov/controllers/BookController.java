@@ -1,11 +1,14 @@
 package ru.gavrilov.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.gavrilov.exceptions.BookNotFoundException;
 import ru.gavrilov.model.Book;
+import ru.gavrilov.service.AuthorService;
 import ru.gavrilov.service.BookService;
+import ru.gavrilov.service.GenreService;
 
 import java.util.Optional;
 
@@ -13,9 +16,14 @@ import java.util.Optional;
 public class BookController {
 
     private final BookService bookService;
+    private final GenreService genreService;
+    private final AuthorService authorService;
 
-    public BookController(BookService bookService) {
+    @Autowired
+    public BookController(BookService bookService, GenreService genreService, AuthorService authorService) {
         this.bookService = bookService;
+        this.genreService = genreService;
+        this.authorService = authorService;
     }
 
     @GetMapping("/books")
@@ -27,9 +35,12 @@ public class BookController {
     @GetMapping("/books/add")
     public String addBook(Model model) {
         model.addAttribute("book", new Book());
+        model.addAttribute("authorList", authorService.findAll());
+        model.addAttribute("genreList", genreService.findAll());
         return "addBook";
     }
 
+    //// TODO: 27.08.2019 fix
     @PostMapping("/books/add")
     public String addBook(@ModelAttribute("book") Book book) {
         bookService.save(book);
