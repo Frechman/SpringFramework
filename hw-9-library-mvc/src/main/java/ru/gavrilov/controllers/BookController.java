@@ -60,7 +60,7 @@ public class BookController {
         return "redirect:/books/";
     }
 
-    @PostMapping("/books/{isbn}/delete")
+    @GetMapping("/books/{isbn}/delete")
     public String getBook(@PathVariable("isbn") String isbn) {
         bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
         return "redirect:/books/";
