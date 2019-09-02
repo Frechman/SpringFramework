@@ -31,13 +31,18 @@
         <tr th:each="book, iter : ${books}">
           <th scope="row" th:text="${iter.count}">Number string</th>
           <td th:text="${book.title}">Title</td>
-          <td th:text="${book.author.toString()}">Author</td>
+          <td th:text="${book.author.lastName + ' ' + book.author.firstName}">Author</td>
           <td th:text="${book.genre.toString()}">Genre</td>
           <td th:text="${book.publishYear}">Publish year</td>
           <td th:text="${book.isbn}">Isbn</td>
           <td>
-            <a class="badge badge-info" th:href="@{/books/__${book.isbn}__}">show</a>
-            <a class="badge badge-info" th:href="@{/books/__${book.isbn}__/delete}">delete</a>
+            <div class="input-group">
+              <a class="btn btn-outline-info btn-sm mr-2" th:href="@{/books/__${book.isbn}__}">edit</a>
+
+              <form th:action="@{/books/delete/(isbn=${book.isbn})}" method="post">
+                <input type="submit" value="delete" class="btn btn-outline-danger btn-sm"/>
+              </form>
+            </div>
           </td>
         </tr>
         </tbody>

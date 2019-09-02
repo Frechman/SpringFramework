@@ -66,8 +66,6 @@ public class BookServiceImpl implements BookService {
         Book foundBook = findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
         //// TODO: 20.08.2019 refactoring
         foundBook.setTitle(book.getTitle());
-        foundBook.setAuthor(book.getAuthor());
-        foundBook.setGenre(book.getGenre());
         foundBook.setPublishYear(book.getPublishYear());
         save(foundBook);
     }

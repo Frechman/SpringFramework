@@ -51,17 +51,18 @@ public class BookController {
     public String getBook(@PathVariable("isbn") String isbn, Model model) {
         Optional<Book> foundBook = bookService.findByIsbn(isbn);
         model.addAttribute("book", foundBook.orElseThrow(BookNotFoundException::new));
-        return "showBook";
+        return "editBook";
     }
 
-    @PutMapping("/books/{isbn}/update")
-    public String getBook(@PathVariable("isbn") String isbn, @ModelAttribute("book") Book book) {
+    @PostMapping("/books/edit")
+    public String editBook(@ModelAttribute("book") Book book) {
+        String isbn = book.getIsbn();
         bookService.update(isbn, book);
         return "redirect:/books/";
     }
 
-    @GetMapping("/books/{isbn}/delete")
-    public String getBook(@PathVariable("isbn") String isbn) {
+    @PostMapping("/books/delete")
+    public String deleteBook(@RequestParam("isbn") String isbn) {
         bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
         return "redirect:/books/";
     }
