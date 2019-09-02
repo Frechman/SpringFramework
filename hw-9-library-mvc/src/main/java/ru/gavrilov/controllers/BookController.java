@@ -40,10 +40,9 @@ public class BookController {
         return "addBook";
     }
 
-    //// TODO: 27.08.2019 fix
     @PostMapping("/books/add")
     public String addBook(@ModelAttribute("book") Book book) {
-        bookService.save(book);
+        bookService.addBook(book);
         return "redirect:/books/";
     }
 

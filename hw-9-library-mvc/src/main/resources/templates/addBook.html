@@ -7,6 +7,7 @@
   <div th:replace="index::css"></div>
 </head>
 <body>
+
 <div class="container">
   <div class="starter-template">
 
@@ -22,19 +23,24 @@
 
         <div class="form-group">
           <label for="author">Author</label>
-          <select class="form-control" id="author" name="author" th:field="${book.author}">
-            <option th:each="author : ${authorList}" th:value="${author.id}"
+          <select class="form-control" id="author" name="author" th:field="${book.author.id}">
+            <option selected="selected"
+                    th:each="author : ${authorList}"
+                    th:value="${author.id}"
                     th:text="${author.firstName + ' ' + author.lastName}">
+              Author
             </option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="genre">Genre</label>
-          <select class="form-control" id="genre" name="genre" th:field="${book.genre}">
-            <option th:each="genre : ${genreList}" th:value="${genre.id}"
+          <select class="form-control" id="genre" name="genre" th:field="${book.genre.id}">
+            <option selected="selected"
+                    th:each="genre : ${genreList}"
+                    th:value="${genre.id}"
                     th:text="${genre.name}">
-              Author
+              Genre
             </option>
           </select>
         </div>
@@ -53,7 +59,7 @@
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Submit</button>
-          <button type="reset" class="btn btn-default">Reset</button>
+          <button type="reset" class="btn btn-light">Reset</button>
         </div>
       </fieldset>
     </form>

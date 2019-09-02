@@ -3,8 +3,12 @@ package ru.gavrilov.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gavrilov.exceptions.AuthorNotFoundException;
 import ru.gavrilov.exceptions.BookNotFoundException;
+import ru.gavrilov.exceptions.GenreNotFoundException;
+import ru.gavrilov.model.Author;
 import ru.gavrilov.model.Book;
+import ru.gavrilov.model.Genre;
 import ru.gavrilov.repository.BookRepository;
 
 import java.util.Collections;
@@ -16,10 +20,14 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final GenreService genreService;
+    private final AuthorService authorService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, GenreService genreService, AuthorService authorService) {
         this.bookRepository = bookRepository;
+        this.genreService = genreService;
+        this.authorService = authorService;
     }
 
     @Override
@@ -41,6 +49,21 @@ public class BookServiceImpl implements BookService {
             return bookRepository.findByTitle(title);
         }
         throw new IllegalArgumentException("Title must not be null!");
+    }
+
+    @Override
+    public void addBook(Book book) {
+        if (book != null) {
+            Long authorId = book.getAuthor().getId();
+            Long genreId = book.getGenre().getId();
+            Genre newGenre = genreService.findById(genreId).orElseThrow(GenreNotFoundException::new);
+            Author newAuthor = authorService.findById(authorId).orElseThrow(AuthorNotFoundException::new);
+            book.setAuthor(newAuthor);
+            book.setGenre(newGenre);
+            save(book);
+            return;
+        }
+        throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override

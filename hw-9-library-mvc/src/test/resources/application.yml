@@ -2,7 +2,7 @@ spring:
   # Database
   datasource:
     driverClassName: org.h2.Driver
-    url: "jdbc:h2:mem:test;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=FALSE"
+    url: "jdbc:h2:mem:test;MODE=PostgreSQL"
     username: "tiger"
     password: "tiger"
     data: "classpath:data.sql"
