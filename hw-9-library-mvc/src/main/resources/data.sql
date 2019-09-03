@@ -11,4 +11,4 @@ INSERT INTO genre(id, name, description)
 VALUES (2, 'Поэзия', 'Поэзия');
 
 INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
-VALUES (1, '999-888', 'Идиот', 1869, 1, 1);
+VALUES (0, '999-888', 'Идиот', 1869, 1, 1);
