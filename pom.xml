@@ -38,7 +38,7 @@
         <module>hw5-library-jdbc</module>
         <module>hw6-library-orm-jpa</module>
         <module>hw7-library-jpa</module>
-        <module>hw-9-library-mvc</module>
+        <module>hw9-library-mvc</module>
     </modules>
 
     <dependencies>

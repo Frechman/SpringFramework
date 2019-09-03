@@ -9,9 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>hw-9-library-mvc</artifactId>
-
-    <name>hw-9-library-mvc</name>
+    <artifactId>hw9-library-mvc</artifactId>
     <description>Library Springboot. Mvc. Thymeleaf</description>
 
     <properties>
