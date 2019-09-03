@@ -1,6 +1,7 @@
 package ru.gavrilov.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,11 +19,13 @@ import ru.gavrilov.service.GenreService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = BookController.class)
@@ -88,7 +91,7 @@ class BookControllerTest {
     @Test
     @DisplayName("return model with 'book','authorList','genreList' attributes" +
             "and return view 'addBook' when a GET request was made for '/books/add'")
-    void testAddBook() throws Exception {
+    void testGetAddBook() throws Exception {
         List<Author> expectedAuthorList = Arrays.asList(new Author("123", "123"), new Author("321", "321"));
         when(authorService.findAll()).thenReturn(expectedAuthorList);
         List<Genre> expectedGenreList = Arrays.asList(
@@ -116,4 +119,94 @@ class BookControllerTest {
         verifyNoMoreInteractions(genreService);
     }
 
+    @Test
+    @DisplayName("added (saved) the book using 'bookService' " +
+            "and then be redirect to 'books' when a POST request was made for '/books/add'")
+    void testPostAddBook() throws Exception {
+        mockMvc.perform(
+                post("/books/add")
+                        .accept(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .flashAttr("book", book2))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books/"));
+
+        verify(bookService, times(1)).addBook(book2);
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    @DisplayName("return model with 'book' attribute " +
+            "and return view 'editBook' when a GET request was made for '/books/{isbn}'")
+    void testGetBook() throws Exception {
+        when(bookService.findByIsbn(book.getIsbn())).thenReturn(Optional.ofNullable(book));
+
+        mockMvc.perform(get("/books/{isbn}", book.getIsbn()))
+                .andExpect(status().isOk())
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attribute("book", book))
+                .andExpect(view().name("editBook"));
+
+        verify(bookService, times(1)).findByIsbn(book.getIsbn());
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    @DisplayName("throw BookNotFoundException " +
+            "if method 'findByIsbn' return Optional.empty when a GET request was made for '/books/{isbn}'")
+    void testGetBookThrowException() throws Exception {
+        when(bookService.findByIsbn(book.getIsbn())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/books/{isbn}", book.getIsbn()))
+                .andExpect(status().isNotFound());
+
+        verify(bookService, times(1)).findByIsbn(book.getIsbn());
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    @DisplayName("edit the book using 'bookService' " +
+            "and then be redirect to 'books' when a POST request was made for '/books/edit'")
+    void testPostEditBook() throws Exception {
+        mockMvc.perform(
+                post("/books/edit")
+                        .accept(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .flashAttr("book", book2))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/books/"));
+
+        verify(bookService, times(1)).update(book2.getIsbn(), book2);
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    @DisplayName("throw BookNotFoundException " +
+            "if method 'findByIsbn' return Optional.empty when a POST request was made for '/books/delete'")
+    void testDeleteBook() throws Exception {
+        when(bookService.findByIsbn(book.getIsbn())).thenReturn(Optional.ofNullable(book));
+
+        mockMvc.perform(
+                post("/books/delete")
+                        .param("isbn", book.getIsbn()))
+                .andExpect(status().is3xxRedirection());
+
+        verify(bookService, times(1)).findByIsbn(book.getIsbn());
+        verify(bookService, times(1)).delete(book);
+        verifyNoMoreInteractions(bookService);
+    }
+
+    @Test
+    @DisplayName("throw BookNotFoundException " +
+            "if method 'findByIsbn' return Optional.empty when a POST request was made for '/books/delete'")
+    void testDeleteBookThrowException() throws Exception {
+        when(bookService.findByIsbn(book.getIsbn())).thenReturn(Optional.empty());
+
+        mockMvc.perform(
+                post("/books/delete")
+                        .param("isbn", book.getIsbn()))
+                .andExpect(status().isNotFound());
+
+        verify(bookService, times(1)).findByIsbn(book.getIsbn());
+        verify(bookService, never()).delete(any());
+        verifyNoMoreInteractions(bookService);
+    }
 }
