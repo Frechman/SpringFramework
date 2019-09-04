@@ -2,12 +2,14 @@
   "name": "library-react",
   "version": "1.0.0",
   "description": "Library. ReactJS + Spring Boot",
-
   "author": "Gavrilov",
   "license": "ISC",
   "dependencies": {
     "react": "^16.5.2",
     "react-dom": "^16.5.2"
+  },
+  "scripts": {
+    "watch": "webpack --watch -d"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
