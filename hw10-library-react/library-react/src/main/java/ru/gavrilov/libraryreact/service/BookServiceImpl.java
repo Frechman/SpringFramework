@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void addBook(Book book) {
+    public Book addBook(Book book) {
         if (book != null) {
             Long authorId = book.getAuthor().getId();
             Long genreId = book.getGenre().getId();
@@ -60,17 +60,15 @@ public class BookServiceImpl implements BookService {
             Author newAuthor = authorService.findById(authorId).orElseThrow(AuthorNotFoundException::new);
             book.setAuthor(newAuthor);
             book.setGenre(newGenre);
-            save(book);
-            return;
+            return save(book);
         }
         throw new IllegalArgumentException("Book must not be null!");
     }
 
     @Override
-    public void save(Book book) {
+    public Book save(Book book) {
         if (book != null) {
-            bookRepository.save(book);
-            return;
+            return bookRepository.save(book);
         }
         throw new IllegalArgumentException("Book must not be null!");
     }
@@ -85,12 +83,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void update(String isbn, Book book) {
+    public Book update(String isbn, Book book) {
         Book foundBook = findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
         //// TODO: 20.08.2019 refactoring
         foundBook.setTitle(book.getTitle());
         foundBook.setPublishYear(book.getPublishYear());
-        save(foundBook);
+        return save(foundBook);
     }
 
     @Override

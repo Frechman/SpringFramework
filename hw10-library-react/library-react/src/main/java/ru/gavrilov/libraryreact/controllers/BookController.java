@@ -1,68 +1,57 @@
 package ru.gavrilov.libraryreact.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.gavrilov.libraryreact.dto.BookDto;
+import ru.gavrilov.libraryreact.exceptions.BookNotFoundException;
 import ru.gavrilov.libraryreact.mappers.BookMapper;
-import ru.gavrilov.libraryreact.service.AuthorService;
+import ru.gavrilov.libraryreact.model.Book;
 import ru.gavrilov.libraryreact.service.BookService;
-import ru.gavrilov.libraryreact.service.GenreService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/v1")
 public class BookController {
 
     private final BookService bookService;
-    private final GenreService genreService;
-    private final AuthorService authorService;
+    private final BookMapper bookMapper;
 
     @Autowired
-    public BookController(BookService bookService, GenreService genreService, AuthorService authorService) {
+    public BookController(BookService bookService, BookMapper bookMapper) {
         this.bookService = bookService;
-        this.genreService = genreService;
-        this.authorService = authorService;
+        this.bookMapper = bookMapper;
     }
 
     @GetMapping("/books")
-    public List<BookDto> getAllBooks() {
-        return bookService.findAll().stream()
-                .map(BookMapper.INSTANCE::bookToBookDto).collect(Collectors.toList());
+    public ResponseEntity<List<BookDto>> getAllBooks() {
+        return ResponseEntity.ok(bookMapper.toBooksDto(bookService.findAll()));
     }
 
-//    @GetMapping("/books/add")
-//    public String addBook(Model model) {
-//        model.addAttribute("book", new Book());
-//        model.addAttribute("authorList", authorService.findAll());
-//        model.addAttribute("genreList", genreService.findAll());
-//        return "addBook";
-//    }
-//
-//    @PostMapping("/books/add")
-//    public String addBook(@ModelAttribute("book") Book book) {
-//        bookService.addBook(book);
-//        return "redirect:/books/";
-//    }
-//
-//    @GetMapping("/books/{isbn}")
-//    public String getBook(@PathVariable("isbn") String isbn, Model model) {
-//        Optional<Book> foundBook = bookService.findByIsbn(isbn);
-//        model.addAttribute("book", foundBook.orElseThrow(BookNotFoundException::new));
-//        return "editBook";
-//    }
-//
-//    @PostMapping("/books/edit")
-//    public String editBook(@ModelAttribute("book") Book book) {
-//        String isbn = book.getIsbn();
-//        bookService.update(isbn, book);
-//        return "redirect:/books/";
-//    }
-//
-//    @PostMapping("/books/delete")
-//    public String deleteBook(@RequestParam("isbn") String isbn) {
-//        bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
-//        return "redirect:/books/";
-//    }
+    @PostMapping("/books/add")
+    public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
+        Book newBook = bookService.addBook(bookMapper.toBook(bookDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookMapper.toBookDto(newBook));
+    }
+
+    @GetMapping("/books/{isbn}")
+    public ResponseEntity<BookDto> getBook(@PathVariable("isbn") String isbn) {
+        Book foundBook = bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
+        return ResponseEntity.ok(bookMapper.toBookDto(foundBook));
+    }
+
+    @PutMapping("/books/edit")
+    public ResponseEntity<BookDto> editBook(@RequestBody BookDto bookDto) {
+        String isbn = bookDto.getIsbn();
+        Book updatedBook = bookService.update(isbn, bookMapper.toBook(bookDto));
+        return ResponseEntity.accepted().body(bookMapper.toBookDto(updatedBook));
+    }
+
+    @DeleteMapping("/books/delete/{isbn}")
+    public ResponseEntity deleteBook(@PathVariable("isbn") String isbn) {
+        bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
+        return ResponseEntity.accepted().build();
+    }
 }

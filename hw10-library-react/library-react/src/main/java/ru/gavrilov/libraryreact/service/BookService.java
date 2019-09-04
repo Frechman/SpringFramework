@@ -13,13 +13,13 @@ public interface BookService {
 
     Optional<Book> findByTitle(String title);
 
-    void addBook(Book book);
+    Book addBook(Book book);
 
-    void save(Book book);
+    Book save(Book book);
 
     void delete(Book book);
 
-    void update(String isbn, Book book);
+    Book update(String isbn, Book book);
 
     List<Book> findAllByGenre(String genre);
 

@@ -5,6 +5,8 @@ const Header = (props) => (
     <h1>{props.title}</h1>
 );
 
+const root = '/api/v1';
+
 export default class App extends React.Component {
 
     constructor(props) {
@@ -13,7 +15,7 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
-        fetch('/books')
+        fetch(root + '/books')
             .then(response => response.json())
             .then(books => this.setState({books}));
     }
