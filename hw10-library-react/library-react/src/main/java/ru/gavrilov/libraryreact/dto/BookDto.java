@@ -9,7 +9,7 @@ public class BookDto {
     private String isbn;
     private String title;
     private Long publishYear;
-    private GenreDto genre;
     private AuthorDto author;
+    private GenreDto genre;
 
 }

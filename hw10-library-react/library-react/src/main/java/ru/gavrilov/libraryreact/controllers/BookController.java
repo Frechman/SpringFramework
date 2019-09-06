@@ -30,6 +30,11 @@ public class BookController {
         return ResponseEntity.ok(bookMapper.toBooksDto(bookService.findAll()));
     }
 
+    @GetMapping("/books/attributes")
+    public ResponseEntity<BookDto> getAttributesBook() {
+        return ResponseEntity.ok(new BookDto());
+    }
+
     @PostMapping("/books/add")
     public ResponseEntity<BookDto> addBook(@RequestBody BookDto bookDto) {
         Book newBook = bookService.addBook(bookMapper.toBook(bookDto));
@@ -49,8 +54,8 @@ public class BookController {
         return ResponseEntity.accepted().body(bookMapper.toBookDto(updatedBook));
     }
 
-    @DeleteMapping("/books/delete/{isbn}")
-    public ResponseEntity deleteBook(@PathVariable("isbn") String isbn) {
+    @DeleteMapping("/books/delete/")
+    public ResponseEntity deleteBook(@RequestBody String isbn) {
         bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
         return ResponseEntity.accepted().build();
     }

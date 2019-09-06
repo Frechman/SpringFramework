@@ -3,12 +3,8 @@ package ru.gavrilov.libraryreact.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.gavrilov.libraryreact.exceptions.AuthorNotFoundException;
 import ru.gavrilov.libraryreact.exceptions.BookNotFoundException;
-import ru.gavrilov.libraryreact.exceptions.GenreNotFoundException;
-import ru.gavrilov.libraryreact.model.Author;
 import ru.gavrilov.libraryreact.model.Book;
-import ru.gavrilov.libraryreact.model.Genre;
 import ru.gavrilov.libraryreact.repository.BookRepository;
 
 import java.util.Collections;
@@ -20,14 +16,10 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final GenreService genreService;
-    private final AuthorService authorService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, GenreService genreService, AuthorService authorService) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.genreService = genreService;
-        this.authorService = authorService;
     }
 
     @Override
@@ -54,12 +46,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book addBook(Book book) {
         if (book != null) {
-            Long authorId = book.getAuthor().getId();
-            Long genreId = book.getGenre().getId();
-            Genre newGenre = genreService.findById(genreId).orElseThrow(GenreNotFoundException::new);
-            Author newAuthor = authorService.findById(authorId).orElseThrow(AuthorNotFoundException::new);
-            book.setAuthor(newAuthor);
-            book.setGenre(newGenre);
             return save(book);
         }
         throw new IllegalArgumentException("Book must not be null!");
