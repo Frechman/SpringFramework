@@ -1,9 +1,10 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
+import $ from "jquery";
 
 const root = '/api/v1';
 
-export default class FormCreateBook extends React.Component {
+export default class FormUpdateBook extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,13 +29,13 @@ export default class FormCreateBook extends React.Component {
                 newBook[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
             }
         });
-        this.props.handleCreateBook(newBook);
+        this.props.handleUpdateBook(newBook);
 
         // clear out the dialog's inputs
         this.resetInputsForm();
 
         // Navigate away from the dialog to hide it.
-        $('#createBookModal').modal('hide');
+        $('#updateBookModal').modal('hide');
     };
 
     resetInputsForm = (event) => {
@@ -108,16 +109,16 @@ export default class FormCreateBook extends React.Component {
 
         return (
             <React.Fragment>
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#createBookModal">
-                    Create book
+                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#updateBookModal">
+                    Update book
                 </button>
 
-                <div className="modal fade" id="createBookModal" tabIndex="-1" role="dialog"
-                     aria-labelledby="Create book" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                <div className="modal fade" id="updateBookModal" tabIndex="-1" role="dialog"
+                     aria-labelledby="Update book" aria-hidden="true" data-keyboard="false" data-backdrop="static">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="createBookModalTitle">Create book</h5>
+                                <h5 className="modal-title" id="updateBookModalTitle">Update book</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -132,7 +133,7 @@ export default class FormCreateBook extends React.Component {
                                     Close
                                 </button>
                                 <button onClick={this.handleSubmit} className="btn btn-primary mr-2" type="button">
-                                    Create
+                                    Update
                                 </button>
                             </div>
                         </div>

@@ -95,13 +95,17 @@ export default class App extends React.Component {
     };
 
     loadListBookFromServer = () => {
-        fetch(root + '/books')
-            .then(response => response.json())
-            .then(books => this.setState({books, isLoaded: true}));
-        fetch(root + '/books/attributes/')
-            .then(response => response.json())
-            .then(book =>
-                this.setState({attributes: Object.keys(book).filter(key => key !== 'id')}));
+        Promise.all([
+            fetch(root + '/books'),
+            fetch(root + '/books/attributes/')
+        ])
+            .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+            .then(([books, bookDto]) =>
+                this.setState({
+                    books,
+                    attributes: Object.keys(bookDto).filter(key => key !== 'id'),
+                    isLoaded: true
+                }));
     };
 
     componentDidMount() {
