@@ -5,7 +5,8 @@ export default class BookList extends React.Component {
     render() {
         const books = this.props.books.map(book =>
             <Book key={book.id} book={book}
-                  // handleEditBook={this.props.handleEditBook}
+                  attributes={this.props.attributes}
+                  handleUpdateBook={this.props.handleUpdateBook}
                   handleDeleteBook={this.props.handleDeleteBook}/>
         );
         return (

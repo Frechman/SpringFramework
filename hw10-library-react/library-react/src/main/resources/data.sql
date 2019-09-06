@@ -12,3 +12,9 @@ VALUES (2, 'Поэзия', 'Поэзия');
 
 INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
 VALUES (0, '999-888', 'Идиот', 1869, 1, 1);
+INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
+VALUES (1, '999-8881', 'Идиот', 1869, 1, 1);
+INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
+VALUES (2, '999-8882', 'Идиот', 1869, 1, 1);
+INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
+VALUES (3, '999-8883', 'Идиот', 1869, 1, 1);

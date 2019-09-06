@@ -122,19 +122,19 @@ export default class FormCreateBook extends React.Component {
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div className="modal-body">
-                                <form>
+                            <form>
+                                <div className="modal-body">
                                     {inputs}
-                                </form>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                    Close
-                                </button>
-                                <button onClick={this.handleSubmit} className="btn btn-primary mr-2" type="button">
-                                    Create
-                                </button>
-                            </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button onClick={this.handleSubmit} className="btn btn-primary mr-2" type="submit">
+                                        Create
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

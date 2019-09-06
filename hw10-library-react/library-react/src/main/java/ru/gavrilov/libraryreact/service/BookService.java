@@ -19,7 +19,7 @@ public interface BookService {
 
     void delete(Book book);
 
-    Book update(String isbn, Book book);
+    Book update(Long id, Book book);
 
     List<Book> findAllByGenre(String genre);
 

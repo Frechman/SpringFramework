@@ -69,11 +69,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book update(String isbn, Book book) {
-        Book foundBook = findByIsbn(isbn).orElseThrow(BookNotFoundException::new);
+    public Book update(Long id, Book book) {
+        Book foundBook = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         //// TODO: 20.08.2019 refactoring
+        foundBook.setIsbn(book.getIsbn());
         foundBook.setTitle(book.getTitle());
         foundBook.setPublishYear(book.getPublishYear());
+        foundBook.setAuthor(book.getAuthor());
+        foundBook.setGenre(book.getGenre());
         return save(foundBook);
     }
 

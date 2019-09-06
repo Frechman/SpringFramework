@@ -12,34 +12,40 @@ export default class App extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            books: []
+            books: [],
+            authors: [],
+            genres: []
         };
     }
 
-    // handleEditBook = (book) => {
-    //     this.setState({isLoaded: false});
-    //     fetch(root + "/books/edit/", {
-    //         method: 'PUT',
-    //         body: JSON.stringify(book)
-    //     })
-    //         .then(response => response.json())
-    //         .then((result) => {
-    //             this.loadListBookFromServer();
-    //         }, (error) => {
-    //             console.log(error);
-    //             this.setState({
-    //                 isLoaded: true,
-    //                 error
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //             this.setState({
-    //                 isLoaded: true,
-    //                 error
-    //             })
-    //         })
-    // };
+    handleUpdateBook = (book) => {
+        this.setState({isLoaded: false});
+        fetch(root + "/books/update/", {
+            method: 'PUT',
+            body: JSON.stringify(book),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then((result) => {
+                console.log('updated');
+                this.loadListBookFromServer();
+            }, (error) => {
+                console.log(error);
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                this.setState({
+                    isLoaded: true,
+                    error
+                })
+            })
+    };
 
     handleDeleteBook = (book) => {
         this.setState({isLoaded: false});
@@ -108,6 +114,15 @@ export default class App extends React.Component {
                 }));
     };
 
+    loadAuthorsAndGenresFromServer = () => {
+        Promise.all([
+            fetch(root + '/authors'),
+            fetch(root + '/genres')
+        ])
+            .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+            .then(([authors, genres]) => this.setState({authors, genres}));
+    };
+
     componentDidMount() {
         this.loadListBookFromServer();
     }
@@ -129,7 +144,10 @@ export default class App extends React.Component {
                     <Header title={'Library'}/>
                     <div className="container">
                         <div className="starter-template">
-                            <BookList books={books} handleDeleteBook={this.handleDeleteBook}/>
+                            <BookList books={books}
+                                      attributes={this.state.attributes}
+                                      handleDeleteBook={this.handleDeleteBook}
+                                      handleUpdateBook={this.handleUpdateBook}/>
 
                             <FormCreateBook attributes={this.state.attributes}
                                             handleCreateBook={this.handleCreateBook}/>

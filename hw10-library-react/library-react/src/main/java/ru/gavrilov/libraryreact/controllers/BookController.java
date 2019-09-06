@@ -47,10 +47,9 @@ public class BookController {
         return ResponseEntity.ok(bookMapper.toBookDto(foundBook));
     }
 
-    @PutMapping("/books/edit")
-    public ResponseEntity<BookDto> editBook(@RequestBody BookDto bookDto) {
-        String isbn = bookDto.getIsbn();
-        Book updatedBook = bookService.update(isbn, bookMapper.toBook(bookDto));
+    @PutMapping("/books/update")
+    public ResponseEntity<BookDto> updateBook(@RequestBody BookDto bookDto) {
+        Book updatedBook = bookService.update(bookDto.getId(), bookMapper.toBook(bookDto));
         return ResponseEntity.accepted().body(bookMapper.toBookDto(updatedBook));
     }
 
