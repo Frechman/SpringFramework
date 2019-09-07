@@ -1,15 +1,11 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
 
-const root = '/api/v1';
-
 export default class FormCreateBook extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            genres: [],
-            authors: [],
             optionAuthor: 0,
             optionGenre: 0
         }
@@ -19,11 +15,12 @@ export default class FormCreateBook extends React.Component {
         event.preventDefault();
 
         const newBook = {};
+        let self = this;
         this.props.attributes.forEach(attribute => {
             if (attribute === 'author') {
-                newBook[attribute] = this.state.authors[this.state.optionAuthor];
+                newBook[attribute] = self.props.authors[self.state.optionAuthor];
             } else if (attribute === 'genre') {
-                newBook[attribute] = this.state.genres[this.state.optionGenre];
+                newBook[attribute] = self.props.genres[self.state.optionGenre];
             } else {
                 newBook[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
             }
@@ -42,9 +39,9 @@ export default class FormCreateBook extends React.Component {
 
         this.props.attributes.forEach(attribute => {
             if (attribute === 'author') {
-                this.state.optionAuthor = 0;
+                this.state.selectedAuthor = 0;
             } else if (attribute === 'genre') {
-                this.state.optionGenre = 0;
+                this.state.selectedGenre = 0;
             } else {
                 ReactDOM.findDOMNode(this.refs[attribute]).value = '';
             }
@@ -54,26 +51,28 @@ export default class FormCreateBook extends React.Component {
     };
 
     onSelectAuthor = (event) => {
-        this.setState({optionAuthor: event.target.value});
+        this.setState({selectedAuthor: event.target.value});
     };
 
     onSelectGenre = (event) => {
-        this.setState({optionGenre: event.target.value});
+        this.setState({selectedGenre: event.target.value});
     };
 
     getTagByAttribute = (attribute) => {
         let tag;
         if (attribute === 'author') {
             tag =
-                <select value={this.state.optionAuthor} className="form-control" onChange={this.onSelectAuthor}>
-                    {this.state.authors.map((author, index) =>
+                <select defaultValue={this.state.selectedAuthor} className="form-control"
+                        onChange={this.onSelectAuthor} required>
+                    {this.props.authors.map((author, index) =>
                         <option key={author.id} value={index}>{author.lastName + ' ' + author.firstName}</option>
                     )}
                 </select>
         } else if (attribute === 'genre') {
             tag =
-                <select value={this.state.optionGenre} className="form-control" onChange={this.onSelectGenre}>
-                    {this.state.genres.map((genre, index) =>
+                <select defaultValue={this.state.selectedGenre} className="form-control" onChange={this.onSelectGenre}
+                        required>
+                    {this.props.genres.map((genre, index) =>
                         <option key={genre.id} value={index}>{genre.name}</option>
                     )}
                 </select>
@@ -84,19 +83,6 @@ export default class FormCreateBook extends React.Component {
         }
         return tag;
     };
-
-    loadAuthorsAndGenresFromServer = () => {
-        Promise.all([
-            fetch(root + '/authors'),
-            fetch(root + '/genres')
-        ])
-            .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-            .then(([authors, genres]) => this.setState({authors, genres}));
-    };
-
-    componentDidMount() {
-        this.loadAuthorsAndGenresFromServer();
-    }
 
     render() {
         const inputs = this.props.attributes.map(attribute =>

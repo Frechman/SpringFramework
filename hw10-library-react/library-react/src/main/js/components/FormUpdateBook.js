@@ -1,30 +1,27 @@
 import React from "react";
 import * as ReactDOM from "react-dom";
 
-const root = '/api/v1';
-
 export default class FormUpdateBook extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             modalId: 'updateBookModal-' + props.book.id,
-            genres: [],
-            authors: [],
-            optionAuthor: 0,
-            optionGenre: 0
+            selectedAuthor: props.authors.indexOf(this.props.book.author),
+            selectedGenre: props.genres.indexOf(this.props.book.genre)
         }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
 
+        let self = this;
         const updatedBook = {};
         this.props.attributes.forEach(attribute => {
             if (attribute === 'author') {
-                updatedBook[attribute] = this.state.authors[this.state.optionAuthor];
+                updatedBook[attribute] = self.props.authors[self.state.selectedAuthor];
             } else if (attribute === 'genre') {
-                updatedBook[attribute] = this.state.genres[this.state.optionGenre];
+                updatedBook[attribute] = self.props.genres[self.state.selectedGenre];
             } else {
                 updatedBook[attribute] = ReactDOM.findDOMNode(this.refs[attribute]).value.trim();
             }
@@ -33,24 +30,24 @@ export default class FormUpdateBook extends React.Component {
         this.props.handleUpdateBook(updatedBook);
 
         // Navigate away from the dialog to hide it.
-        $(this.state.modalId).modal('hide');
+        $('#' + this.state.modalId).modal('hide');
     };
 
     onSelectAuthor = (event) => {
-        this.setState({optionAuthor: event.target.value});
+        this.setState({selectedAuthor: event.target.value});
     };
 
     onSelectGenre = (event) => {
-        this.setState({optionGenre: event.target.value});
+        this.setState({selectedGenre: event.target.value});
     };
 
     getTagByAttribute = (attribute) => {
         let tag;
         if (attribute === 'author') {
             tag =
-                <select value={this.state.optionAuthor} className="form-control" onChange={this.onSelectAuthor}
+                <select defaultValue={this.state.selectedAuthor} className="form-control" onChange={this.onSelectAuthor}
                         required>
-                    {this.state.authors.map((author, index) =>
+                    {this.props.authors.map((author, index) =>
                         <option key={this.state.modalId + author.id} value={index}>
                             {author.lastName + ' ' + author.firstName}
                         </option>
@@ -58,36 +55,20 @@ export default class FormUpdateBook extends React.Component {
                 </select>
         } else if (attribute === 'genre') {
             tag =
-                <select value={this.state.optionGenre} className="form-control" onChange={this.onSelectGenre} required>
-                    {this.state.genres.map((genre, index) =>
+                <select defaultValue={this.state.selectedGenre} className="form-control" onChange={this.onSelectGenre}
+                        required>
+                    {this.props.genres.map((genre, index) =>
                         <option key={this.state.modalId + genre.id} value={index}>{genre.name}</option>
                     )}
                 </select>
         } else {
             tag =
-                <input type="text" className="form-control" ref={attribute}
+                <input type="text" className="form-control" ref={attribute} disabled={attribute === 'isbn'}
                        defaultValue={this.props.book[attribute]}
                        placeholder={attribute} required/>
         }
         return tag;
     };
-
-    loadAuthorsAndGenresFromServer = () => {
-        Promise.all([
-            fetch(root + '/authors'),
-            fetch(root + '/genres')
-        ])
-            .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-            .then(([authors, genres]) => this.setState({authors, genres}));
-    };
-
-    componentDidMount() {
-        this.loadAuthorsAndGenresFromServer();
-        this.setState({
-            optionAuthor: this.state.authors.indexOf(this.props.book.author),
-            optionGenre: this.state.genres.indexOf(this.props.book.genre)
-        })
-    }
 
     render() {
         const inputs = this.props.attributes.map(attribute =>

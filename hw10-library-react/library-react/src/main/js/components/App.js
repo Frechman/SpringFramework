@@ -2,6 +2,7 @@ import React from "react";
 import BookList from "./BookList";
 import Header from "./Header";
 import FormCreateBook from "./FormCreateBook";
+import swal from "sweetalert";
 
 const root = '/api/v1';
 
@@ -63,12 +64,13 @@ export default class App extends React.Component {
                     error
                 });
             })
+            .then(res => swal("Deleted!", "Your book has been deleted!", "success"))
             .catch((error) => {
                 console.log(error);
                 this.setState({
                     isLoaded: true,
                     error
-                })
+                });
             })
     };
 
@@ -101,6 +103,7 @@ export default class App extends React.Component {
     };
 
     loadListBookFromServer = () => {
+        this.setState({isLoaded: false});
         Promise.all([
             fetch(root + '/books'),
             fetch(root + '/books/attributes/')
@@ -115,16 +118,73 @@ export default class App extends React.Component {
     };
 
     loadAuthorsAndGenresFromServer = () => {
+        this.setState({isLoaded: false});
         Promise.all([
             fetch(root + '/authors'),
             fetch(root + '/genres')
         ])
             .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-            .then(([authors, genres]) => this.setState({authors, genres}));
+            .then(([authors, genres]) =>
+                this.setState({
+                    authors,
+                    genres,
+                    isLoaded: true
+                }));
+    };
+
+    // todo fix
+    getProperties = (attribute) => {
+        let properties = {};
+        switch (attribute) {
+            case 'id':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "number",
+                    readOnly: true
+                };
+                break;
+            case 'isbn':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "string",
+                    readOnly: true
+                };
+                break;
+            case 'title':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "string",
+                    readOnly: false
+                };
+                break;
+            case 'publishYear':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "number",
+                    readOnly: false
+                };
+                break;
+            case 'author':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "object",
+                    readOnly: false
+                };
+                break;
+            case 'genre':
+                properties[attribute] = {
+                    title: attribute,
+                    type: "object",
+                    readOnly: false
+                };
+                break;
+        }
+        return properties;
     };
 
     componentDidMount() {
         this.loadListBookFromServer();
+        this.loadAuthorsAndGenresFromServer();
     }
 
     render() {
@@ -145,11 +205,15 @@ export default class App extends React.Component {
                     <div className="container">
                         <div className="starter-template">
                             <BookList books={books}
+                                      authors={this.state.authors}
+                                      genres={this.state.genres}
                                       attributes={this.state.attributes}
                                       handleDeleteBook={this.handleDeleteBook}
                                       handleUpdateBook={this.handleUpdateBook}/>
 
                             <FormCreateBook attributes={this.state.attributes}
+                                            authors={this.state.authors}
+                                            genres={this.state.genres}
                                             handleCreateBook={this.handleCreateBook}/>
                         </div>
                     </div>
