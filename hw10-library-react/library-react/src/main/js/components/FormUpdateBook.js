@@ -7,8 +7,8 @@ export default class FormUpdateBook extends React.Component {
         super(props);
         this.state = {
             modalId: 'updateBookModal-' + props.book.id,
-            selectedAuthor: props.authors.indexOf(this.props.book.author),
-            selectedGenre: props.genres.indexOf(this.props.book.genre)
+            selectedAuthor: props.authors.findIndex(author => author.id === props.book.author.id),
+            selectedGenre: props.genres.findIndex(genre => genre.id === props.book.genre.id)
         }
     }
 
