@@ -84,7 +84,7 @@ export default class App extends React.Component {
                 .then(([books, bookDto]) =>
                     this.setState({
                         books,
-                        attributes: Object.keys(bookDto).filter(key => key !== 'id'),
+                        attributes: Object.keys(bookDto).filter(key => key !== 'id')
                     }))
                 .then(() => resolve())
                 .catch((reason) => reject(reason))
@@ -98,12 +98,8 @@ export default class App extends React.Component {
                 fetch(root + '/genres')
             ])
                 .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-                .then(([authors, genres]) => {
-                    this.setState({
-                        authors,
-                        genres,
-                    });
-                }).then(() => resolve())
+                .then(([authors, genres]) => this.setState({authors, genres}))
+                .then(() => resolve())
                 .catch((reason) => reject(reason))
         )
     };
