@@ -2,6 +2,7 @@ package ru.gavrilov.libraryreact.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.gavrilov.libraryreact.dto.BookDto;
@@ -53,7 +54,7 @@ public class BookController {
         return ResponseEntity.accepted().body(bookMapper.toBookDto(updatedBook));
     }
 
-    @DeleteMapping("/books/delete/")
+    @DeleteMapping("/books/delete")
     public ResponseEntity deleteBook(@RequestBody String isbn) {
         bookService.delete(bookService.findByIsbn(isbn).orElseThrow(BookNotFoundException::new));
         return ResponseEntity.accepted().build();
