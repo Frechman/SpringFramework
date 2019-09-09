@@ -108,56 +108,6 @@ export default class App extends React.Component {
         )
     };
 
-    // todo fix
-    getProperties = (attribute) => {
-        let properties = {};
-        switch (attribute) {
-            case 'id':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "number",
-                    readOnly: true
-                };
-                break;
-            case 'isbn':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "string",
-                    readOnly: true
-                };
-                break;
-            case 'title':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "string",
-                    readOnly: false
-                };
-                break;
-            case 'publishYear':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "number",
-                    readOnly: false
-                };
-                break;
-            case 'author':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "object",
-                    readOnly: false
-                };
-                break;
-            case 'genre':
-                properties[attribute] = {
-                    title: attribute,
-                    type: "object",
-                    readOnly: false
-                };
-                break;
-        }
-        return properties;
-    };
-
     componentDidMount() {
         Promise.all([
             this.loadListBookFromServer(),
