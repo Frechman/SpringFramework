@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    Comment addComment(String content, String isbnBook);
+    Comment addComment(String isbnBook, String content);
 
     boolean removeComment(String isbn, String content);
 
@@ -15,5 +15,5 @@ public interface CommentService {
 
     List<Comment> findAllCommentsByBook(String isbnBook);
 
-    Optional<Comment> findByContentAndBook(String content, String isbnBook);
+    Optional<Comment> findByContentAndBook(String isbnBook, String content);
 }

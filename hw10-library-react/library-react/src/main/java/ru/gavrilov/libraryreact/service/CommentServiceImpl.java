@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment addComment(String content, String isbnBook) {
+    public Comment addComment(String isbnBook, String content) {
         if (content == null || isbnBook == null) {
             throw new IllegalArgumentException("Content or isbn book must not be null");
         }
@@ -34,25 +34,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(new Comment(content, book));
     }
 
-    private boolean removeComment(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id must not be null!");
-        }
-        commentRepository.deleteById(id);
-        return true;
-    }
-
-    private boolean removeComment(Comment comment) {
-        if (comment == null) {
-            throw new IllegalArgumentException("Comment must not be null!");
-        }
-        return removeComment(comment.getId());
-    }
-
     @Override
-    public boolean removeComment(String isbn, String content) {
-        Comment comment = findByContentAndBook(content, isbn).orElseThrow(CommentNotFoundException::new);
-        return removeComment(comment);
+    public boolean removeComment(String isbnBook, String content) {
+        Comment comment = findByContentAndBook(isbnBook, content).orElseThrow(CommentNotFoundException::new);
+        commentRepository.delete(comment);
+        return true;
     }
 
     @Override
@@ -65,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> findByContentAndBook(String content, String isbnBook) {
+    public Optional<Comment> findByContentAndBook(String isbnBook, String content) {
         if (content == null || isbnBook == null) {
             throw new IllegalArgumentException("Content or Isbn must not be null");
         }

@@ -13,8 +13,6 @@ public interface BookService {
 
     Optional<Book> findByTitle(String title);
 
-    Book addBook(Book book);
-
     Book save(Book book);
 
     void delete(Book book);

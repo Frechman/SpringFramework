@@ -44,14 +44,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book addBook(Book book) {
-        if (book != null) {
-            return save(book);
-        }
-        throw new IllegalArgumentException("Book must not be null!");
-    }
-
-    @Override
     public Book save(Book book) {
         if (book != null) {
             return bookRepository.save(book);
@@ -70,6 +62,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book update(Long id, Book book) {
+        if (book == null) {
+            throw new IllegalArgumentException("Book must not be null!");
+        }
         Book foundBook = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
         //// TODO: 20.08.2019 refactoring
         foundBook.setIsbn(book.getIsbn());
