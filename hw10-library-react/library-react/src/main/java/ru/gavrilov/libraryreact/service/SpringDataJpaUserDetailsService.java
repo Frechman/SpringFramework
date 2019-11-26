@@ -1,4 +1,4 @@
-package ru.gavrilov.libraryreact.security;
+package ru.gavrilov.libraryreact.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
