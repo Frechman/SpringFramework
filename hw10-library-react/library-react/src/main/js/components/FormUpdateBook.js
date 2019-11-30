@@ -99,10 +99,10 @@ export default class FormUpdateBook extends React.Component {
                                     {inputs}
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                    <button type="button" className="btn btn-outline-secondary" data-dismiss="modal">
                                         Close
                                     </button>
-                                    <button onClick={this.handleSubmit} className="btn btn-primary mr-2" type="submit">
+                                    <button onClick={this.handleSubmit} className="btn btn-outline-primary mr-2" type="submit">
                                         Update
                                     </button>
                                 </div>

@@ -24,3 +24,10 @@ VALUES (3, '333-333-3', 'Евгений Онегин', 1831, 1, 2);
 
 INSERT INTO book(id, isbn, title, publish_year, genre_id, author_id)
 VALUES (4, '444-444-4', 'Медный всадник', 1837, 2, 2);
+
+INSERT INTO users(id, first_name, last_name, email, password)
+VALUES (1, 'serega', 'dvornik', 'moidvor@gmail.com',
+        '$2a$08$I96jWKwM5m4CSfNf5ZZdVe9OCzBw69B52V1O5QO0kuTyzp20XxHYO');
+
+INSERT INTO user_role(user_id, roles)
+VALUES (1, 'ROLE_ADMIN');
