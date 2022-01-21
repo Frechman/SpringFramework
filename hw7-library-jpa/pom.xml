@@ -15,7 +15,7 @@
     <properties>
         <spring-shell-starter.version>2.0.1.RELEASE</spring-shell-starter.version>
 
-        <h2.version>1.4.199</h2.version>
+        <h2.version>2.1.210</h2.version>
 
         <lombok.version>1.18.6</lombok.version>
         <lombok-maven-plugin.version>1.18.6.0</lombok-maven-plugin.version>
