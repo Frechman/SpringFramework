@@ -17,7 +17,7 @@
     <properties>
         <spring-shell-starter.version>2.0.0.RELEASE</spring-shell-starter.version>
 
-        <postgresql.version>42.2.2</postgresql.version>
+        <postgresql.version>42.3.3</postgresql.version>
         <h2.version>1.4.199</h2.version>
 
         <lombok.version>1.18.6</lombok.version>
